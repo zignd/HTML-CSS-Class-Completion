@@ -96,7 +96,7 @@ function activate(context) {
             // check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
             var rawClasses = text.match(/class=["|']([\w- ]*$)/); 
             if (rawClasses === null) {
-                return null;
+                return [];
             }
 
             // will store the classes found on the class attribute
