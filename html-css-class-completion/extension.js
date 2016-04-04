@@ -138,6 +138,12 @@ function activate(context) {
     });
     context.subscriptions.push(disposable);
     
+    var disposable = vscode.commands.registerCommand('extension.html-css-class-completion.refresh', () => {
+        fetchAllCssRulesInCssFiles();
+    });
+
+    context.subscriptions.push(disposable);
+    
     fetchAllCssRulesInCssFiles();
     //fetchAllCssRulesInHtmlFiles();
 }
