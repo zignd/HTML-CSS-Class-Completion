@@ -11,16 +11,16 @@ function activate(context) {
         vscode.window.showInformationMessage('HTML CSS Class Completion: Fetching CSS rules from CSS files, please wait.');
         // fetches the css files excluding the ones within node_modules folders that are within another node_modules folder
         vscode.workspace.findFiles('**/*.css', 'node_modules/**/node_modules/**/*').then(function (uris) {
-            // will contain all the css files concatenated
-            var cssFilesConcatenated = "";
+            // extracts the text of the file and directly parse it.
+            // if an error occurs during the parse hide the error (it could be shown into an error log)
+            try {
+                fetchClasses(textDocument.getText(), classes);
+            } catch (err) { }
             // goes through each css file found and open it
             uris.forEach(function (uri, index) {
                 vscode.workspace.openTextDocument(uri).then(function (textDocument) {
-                    // extracts the text of the file and concatenates it
-                    cssFilesConcatenated += textDocument.getText();
                     if (uris.length == index + 1) {
-                        // after finishing the process the css classes are fetched from this large string and added to the classes array
-                        fetchClasses(cssFilesConcatenated, classes);
+                        // Display message to user
                         vscode.window.showInformationMessage("HTML CSS Class Completion: Finished fetching CSS rules from CSS files.");
                     }
                 });
