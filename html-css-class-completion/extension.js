@@ -11,20 +11,15 @@ function activate(context) {
         vscode.window.showInformationMessage('HTML CSS Class Completion: Fetching CSS rules from CSS files, please wait.');
         // fetches the css files excluding the ones within node_modules folders that are within another node_modules folder
         vscode.workspace.findFiles('**/*.css', 'node_modules/**/node_modules/**/*').then(function (uris) {
-            // will contain all the css files concatenated
-            var cssFilesConcatenated = "";
+
             // goes through each css file found and open it
-            uris.forEach(function (uri, index) {
-                vscode.workspace.openTextDocument(uri).then(function (textDocument) {
-                    // extracts the text of the file and concatenates it
-                    cssFilesConcatenated += textDocument.getText();
-                    if (uris.length == index + 1) {
-                        // after finishing the process the css classes are fetched from this large string and added to the classes array
-                        fetchClasses(cssFilesConcatenated, classes);
-                        vscode.window.showInformationMessage("HTML CSS Class Completion: Finished fetching CSS rules from CSS files.");
-                    }
+            return Promise.all( uris.map(function (uri, index) {
+                return vscode.workspace.openTextDocument(uri).then(function (textDocument) {
+                    return fetchClasses(textDocument.getText(), classes);
                 });
-            });
+            }) ).then(function() {
+                    vscode.window.showInformationMessage("HTML CSS Class Completion: Finished fetching CSS rules from CSS files.");                
+            })
         });
     }
 
@@ -52,7 +47,9 @@ function activate(context) {
     // }
 
     function fetchClasses(text, classes) {
-        var parsedCss = css.parse(text);
+        classes = classes || [];
+        // use css silent
+        var parsedCss = css.parse(text, { silent: true });
         
         // go through each of the rules...
         parsedCss.stylesheet.rules.forEach(function (rule) {
