@@ -8,21 +8,33 @@ function activate(context) {
     var classes = [];
 
     function fetchAllCssRulesInCssFiles() {
-        vscode.window.showInformationMessage('HTML CSS Class Completion: Fetching CSS rules from CSS files, please wait.');
+        vscode.window.showInformationMessage('Ridgian HTML CSS Class Completion: Fetching CSS rules from CSS files, please wait.');
         // fetches the css files excluding the ones within node_modules folders that are within another node_modules folder
         vscode.workspace.findFiles('**/*.css', 'node_modules/**/node_modules/**/*').then(function (uris) {
             // will contain all the css files concatenated
-            var cssFilesConcatenated = "";
+            var cssFile = "";
             // goes through each css file found and open it
             uris.forEach(function (uri, index) {
                 vscode.workspace.openTextDocument(uri).then(function (textDocument) {
-                    // extracts the text of the file and concatenates it
-                    cssFilesConcatenated += textDocument.getText();
-                    if (uris.length == index + 1) {
+                    try {
+                        // extracts the text of the file
+                        cssFile = textDocument.getText();
+                    
                         // after finishing the process the css classes are fetched from this large string and added to the classes array
-                        fetchClasses(cssFilesConcatenated, classes);
-                        vscode.window.showInformationMessage("HTML CSS Class Completion: Finished fetching CSS rules from CSS files.");
+                        var cssFileClasses = fetchClasses(cssFile);
+                        cssFileClasses.forEach(function (cssClass) {
+                            classes.push(cssClass);
+                        });
+                        
+                    } catch (error) {
+                        // error
+                        vscode.window.showWarningMessage("Ridgian HTML CSS Class Completion: Error fetching CSS rules from CSS files: " + textDocument.uri);
                     }
+                    
+                    if (uris.length == index + 1) {
+                        vscode.window.showInformationMessage("Ridgian HTML CSS Class Completion: Finished fetching CSS rules from CSS files.");
+                    }
+                    
                 });
             });
         });
@@ -51,7 +63,8 @@ function activate(context) {
     //     });
     // }
 
-    function fetchClasses(text, classes) {
+    function fetchClasses(text) {
+        var classes = [];
         var parsedCss = css.parse(text);
         
         // go through each of the rules...

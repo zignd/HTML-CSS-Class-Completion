@@ -1,9 +1,9 @@
 {
-	"name": "html-css-class-completion",
-	"displayName": "HTML CSS Class Completion",
+	"name": "ridgian-html-css-class-completion",
+	"displayName": "Ridgian HTML CSS Class Completion",
 	"description": "Provides CSS class completion for the HTML class attribute.",
 	"version": "0.0.2",
-	"publisher": "Zignd",
+	"publisher": "joelfmrodrigues",
 	"engines": {
 		"vscode": "^0.10.1"
 	},
