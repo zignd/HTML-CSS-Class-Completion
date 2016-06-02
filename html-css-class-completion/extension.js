@@ -8,7 +8,7 @@ function activate(context) {
     var classes = [];
 
     function fetchAllCssRulesInCssFiles() {
-        vscode.window.showInformationMessage('Ridgian HTML CSS Class Completion: Fetching CSS rules from CSS files, please wait.');
+        vscode.window.showInformationMessage('HTML CSS Class Completion: Fetching CSS rules from CSS files, please wait.');
         // fetches the css files excluding the ones within node_modules folders that are within another node_modules folder
         vscode.workspace.findFiles('**/*.css', 'node_modules/**/node_modules/**/*').then(function (uris) {
             // will contain all the css files concatenated
@@ -28,11 +28,11 @@ function activate(context) {
                         
                     } catch (error) {
                         // error
-                        vscode.window.showWarningMessage("Ridgian HTML CSS Class Completion: Error fetching CSS rules from CSS files: " + textDocument.uri);
+                        vscode.window.showWarningMessage("HTML CSS Class Completion: Error fetching CSS rules from CSS files: " + textDocument.uri);
                     }
                     
                     if (uris.length == index + 1) {
-                        vscode.window.showInformationMessage("Ridgian HTML CSS Class Completion: Finished fetching CSS rules from CSS files.");
+                        vscode.window.showInformationMessage("HTML CSS Class Completion: Finished fetching CSS rules from CSS files.");
                     }
                     
                 });
