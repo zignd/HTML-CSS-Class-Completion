@@ -13,12 +13,17 @@ function activate(context) {
         vscode.workspace.findFiles('**/*.css', 'node_modules/**/node_modules/**/*').then(function (uris) {
             // will contain all the css files concatenated
             var cssFilesConcatenated = "";
+            // keeps track of how many css files have been concatenated
+            var numCssFilesConcatenated = 0;
             // goes through each css file found and open it
             uris.forEach(function (uri, index) {
                 vscode.workspace.openTextDocument(uri).then(function (textDocument) {
                     // extracts the text of the file and concatenates it
                     cssFilesConcatenated += textDocument.getText();
-                    if (uris.length == index + 1) {
+                    // Because openTextDocument() resolves asynchronously, it will frequently happen that the last file
+                    // in the uris array is finished loading before some of the previous files in the array.
+                    // We need to count how many files have been concatenated to know if we have all of them.
+                    if (uris.length == ++numCssFilesConcatenated) {
                         // after finishing the process the css classes are fetched from this large string and added to the classes array
                         fetchClasses(cssFilesConcatenated, classes);
                         vscode.window.showInformationMessage("HTML CSS Class Completion: Finished fetching CSS rules from CSS files.");
