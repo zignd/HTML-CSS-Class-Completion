@@ -3,6 +3,8 @@
 var vscode = require('vscode');
 var css = require('css');
 //var cheerio = require('cheerio');
+var fs = require('fs');
+var path = require('path');
 
 function activate(context) {
     var classes = [];
@@ -51,9 +53,25 @@ function activate(context) {
     //     });
     // }
 
+    var resourceJsonPath = path.resolve(vscode.workspace.rootPath, 'resource.json');
+
+    function fetchAllCssRulesInResourceJson() {
+        var json = JSON.parse(fs.readFileSync(resourceJsonPath, 'utf8'));
+        for (var k in json.css) {
+            for (var i = 0; i < json.css[k].length; i++) {
+                fs.readFile(path.resolve(vscode.workspace.rootPath, json.css[k][i]), 'utf8', function (err, data) {
+                    if (err) {
+                        return;
+                    }
+                    fetchClasses(data, classes);
+                });
+            }
+        }
+    }
+
     function fetchClasses(text, classes) {
         var parsedCss = css.parse(text);
-        
+
         // go through each of the rules...
         parsedCss.stylesheet.rules.forEach(function (rule) {
             // ...of type rule
@@ -63,7 +81,7 @@ function activate(context) {
                     var classesRegex = /[.]([\w-]+)/g;
                     var tempClasses = [];
                     var item = null;
-                    
+
                     // check if the current selector contains class names
                     while (item = classesRegex.exec(selector)) {
                         tempClasses.push(item[1]);
@@ -92,9 +110,9 @@ function activate(context) {
             var start = new vscode.Position(position.line, 0);
             var range = new vscode.Range(start, position);
             var text = document.getText(range);
-            
+
             // check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
-            var rawClasses = text.match(/class=["|']([\w- ]*$)/); 
+            var rawClasses = text.match(/class=["|']([\w- ]*$)/);
             if (rawClasses === null) {
                 return [];
             }
@@ -120,7 +138,7 @@ function activate(context) {
             for (var i = 0; i < classes.length; i++) {
                 completionItems.push(new vscode.CompletionItem(classes[i]));
             }
-            
+
             // removes from the collection the classes already specified on the class attribute
             for (var i = 0; i < classesOnAttribute.length; i++) {
                 for (var j = 0; j < completionItems.length; j++) {
@@ -137,8 +155,12 @@ function activate(context) {
         }
     });
     context.subscriptions.push(disposable);
-    
-    fetchAllCssRulesInCssFiles();
+
+    if (fs.existsSync(resourceJsonPath)) {
+        fetchAllCssRulesInResourceJson();
+    } else {
+        fetchAllCssRulesInCssFiles();
+    }
     //fetchAllCssRulesInHtmlFiles();
 }
 exports.activate = activate;
