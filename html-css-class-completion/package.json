@@ -1,21 +1,21 @@
 {
-	"name": "html-css-class-completion",
-	"displayName": "HTML CSS Class Completion",
-	"description": "Provides CSS class completion for the HTML class attribute.",
-	"version": "0.0.2",
-	"publisher": "Zignd",
-	"engines": {
-		"vscode": "^0.10.1"
-	},
-	"categories": [
+    "name": "html-css-class-completion",
+    "displayName": "HTML CSS Class Completion",
+    "description": "Provides CSS class completion for the HTML class attribute.",
+    "version": "0.0.2",
+    "publisher": "Zignd",
+    "engines": {
+        "vscode": "^0.10.1"
+    },
+    "categories": [
         "Languages",
-		"Other"
-	],
-	"activationEvents": [
-		"onLanguage:html"
-	],
+        "Other"
+    ],
+    "activationEvents": [
+        "onLanguage:html"
+    ],
     "icon": "images/icon.png",
-	"main": "./extension",
+    "main": "./extension",
     "repository": {
         "url": "https://github.com/Zignd/HTML-CSS-Class-Completion"
     },
@@ -23,7 +23,18 @@
         "css": "2.2.1",
         "cheerio": "0.19.0"
     },
-	"devDependencies": {
-		"vscode": "0.10.x"
-	}
+    "devDependencies": {
+        "vscode": "0.10.x"
+    },
+    "configuration": {
+        "type": "object",
+        "title": "HTML-CSS-Class-Completion configuration",
+        "properties": {
+            "htmlCssClassCompletion.message": {
+                "type": "boolean",
+                "default": true,
+                "description": "Should an information message be shown when this extension is activated?"
+            }
+        }
+    }
 }
