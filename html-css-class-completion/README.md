@@ -1,6 +1,6 @@
 #CSS Class Suggestion
 
-CSS Class Suggestion is based on the extension [HTML CSS Class Completion](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion)
+CSS Classes is based on the extension [HTML CSS Class Completion](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion) but it was modified to include some bug fixes and changes.
 
 
 A Visual Studio Code extension that provides CSS class suggestion for the HTML class attribute based on the CSS files on your workspace.
