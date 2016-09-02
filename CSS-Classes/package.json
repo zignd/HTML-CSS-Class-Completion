@@ -3,7 +3,7 @@
     "displayName": "CSS Classes",
     "description": "Provides CSS class suggestions for the HTML class attribute based on the CSS files on your workspace",
     "version": "0.0.1",
-    "publisher": "Joel Rodrigues",
+    "publisher": "joelfmrodrigues",
     "engines": {
         "vscode": "^0.10.1"
     },
