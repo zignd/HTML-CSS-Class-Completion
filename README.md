@@ -1,11 +1,10 @@
-#CSS Class Suggestion
+#CSS Classes
 
 CSS Classes is based on the extension [HTML CSS Class Completion](https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion) but it was modified to include some bug fixes and changes.
 
 
-A Visual Studio Code extension that provides CSS class suggestion for the HTML class attribute based on the CSS files on your workspace.
+A Visual Studio Code extension that provides CSS class suggestions for the HTML class attribute based on the CSS files on your workspace.
 
-![](http://i.imgur.com/CJnAb8Q.gif)
 
 ##Features
 * Fetches all CSS classes from CSS files (one file at a time) on the current workspace (opened folder), excluding NodeModules folder
