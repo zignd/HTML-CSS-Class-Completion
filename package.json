@@ -1,39 +1,43 @@
 {
-  "name": "html-css-class-completion",
-  "displayName": "HTML CSS Class Completion",
-  "description": "Provides CSS class name completion for the HTML class attribute based on the CSS files on your workspace.",
-  "version": "1.0.0",
-  "publisher": "Zignd",
-  "engines": {
-    "vscode": "^1.4.0"
-  },
-  "categories": [
-    "Languages",
-    "Other"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "contributes": {
-    "commands": [
-      {
-        "command": "html-css-class-completion.cache",
-        "title": "Cache CSS class definitions"
-      }
-    ]
-  },
-  "main": "./out/src/extension",
-  "scripts": {
-    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
-  "devDependencies": {
-    "typescript": "^1.8.5",
-    "vscode": "^0.11.0"
-  },
-  "dependencies": {
-    "async": "^2.0.1",
-    "css": "^2.2.1"
-  }
+    "name": "html-css-class-completion",
+    "displayName": "HTML CSS Class Completion",
+    "description": "Provides CSS class name completion for the HTML class attribute based on the CSS files on your workspace.",
+    "version": "1.0.1",
+    "publisher": "Zignd",
+    "engines": {
+        "vscode": "^1.4.0"
+    },
+    "categories": [
+        "Languages",
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "html-css-class-completion.cache",
+                "title": "Cache CSS class definitions"
+            }
+        ]
+    },
+    "icon": "images/icon.png",
+    "repository": {
+        "url": "https://github.com/Zignd/HTML-CSS-Class-Completion"
+    },
+    "main": "./out/src/extension",
+    "scripts": {
+        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "typescript": "^1.8.5",
+        "vscode": "^0.11.0"
+    },
+    "dependencies": {
+        "async": "^2.0.1",
+        "css": "^2.2.1"
+    }
 }
