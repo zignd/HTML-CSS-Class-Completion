@@ -14,6 +14,10 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * Customization of the directories in which the extension will look for class definitions through User Settings
 * Support for PHP, Razor, Jade...
 
+## Changelog
+### 1.0.2 (Sep 17, 2016)
+* Refactored to add proper asynchronous parallel parsing of the documents
+
 ## Usage
 If there are HTML files on your workspace the extension automatically starts and look for CSS class definitions. In case new CSS classes are definined or new CSS files are added to the workspace and you also want auto completion for them simply hit the lightning icon you will find on the status bar and execute the command pressing `Ctrl+Shift+P` and then typing "Cache CSS class definitions".
 
