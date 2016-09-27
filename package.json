@@ -2,7 +2,7 @@
     "name": "html-css-class-completion",
     "displayName": "HTML CSS Class Completion",
     "description": "Provides CSS class name completion for the HTML class attribute based on the CSS files on your workspace.",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "publisher": "Zignd",
     "engines": {
         "vscode": "^1.4.0"

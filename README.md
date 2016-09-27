@@ -15,6 +15,9 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * Support for PHP, Razor, Jade...
 
 ## Changelog
+### 1.0.3 (Sep 27, 2016)
+* Fixed error showing up whenever there were no workspace opened
+
 ### 1.0.2 (Sep 17, 2016)
 * Refactored to add proper asynchronous parallel parsing of the documents
 
