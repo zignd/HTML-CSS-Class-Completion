@@ -20,6 +20,12 @@ function cache(): Promise<void> {
             console.log('Looking for parseable documents...');
             let uris: vscode.Uri[] = await Fetcher.findAllParseableDocuments();
 
+            if (!uris) {
+                console.log("Found no documents");
+                notifier.statusBarItem.hide();
+                return;
+            }
+
             console.log('Found all parseable documents.');
             let definitions: CssClassDefinition[] = [];
 
