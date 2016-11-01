@@ -7,9 +7,9 @@ import ParseEngineRegistry from './parse-engines/parse-engine-registry';
 
 class ParseEngineGateway {
     public static async callParser(uri: vscode.Uri): Promise<CssClassDefinition[]> {
-        let textDocument = await vscode.workspace.openTextDocument(uri);
-        let parseEngine: ParseEngine = ParseEngineRegistry.getParseEngine(textDocument.languageId);
-        let cssClassDefinitions: CssClassDefinition[] = parseEngine.parse(textDocument);
+        // let textDocument = await vscode.workspace.openTextDocument(uri);
+        let parseEngine: ParseEngine = ParseEngineRegistry.getParseEngine('css');
+        let cssClassDefinitions: CssClassDefinition[] = parseEngine.parse(uri);
         return cssClassDefinitions;
     }
 }
