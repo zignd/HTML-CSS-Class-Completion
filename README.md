@@ -1,12 +1,13 @@
-# HTML CSS Class Completion
+# IntelliSense for CSS class names
 
-A Visual Studio Code extension that provides CSS class name completion for the HTML `class` attribute based on the CSS files on your workspace.
+A Visual Studio Code extension that provides CSS class name completion for the HTML `class` attribute based on the CSS files in your workspace. Also supports React's `className` attribute.
 
 ![](http://i.imgur.com/5crMfTj.gif)
 
 ## Features
 * Provides class name completion from class definitions found on your current workspace
 * Command to manually re-cache the class definitions used on the auto completion
+* Supports React's `className` attribute
 
 ## Features on the backlog
 * Cache class definitions from style tags
@@ -14,7 +15,12 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * Customization of the directories in which the extension will look for class definitions through User Settings
 * Support for PHP, Razor, Jade...
 
+You can request new features on the [extension repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues).
+
 ## Changelog
+### 1.1.0 (Apr 14, 2017)
+* Added support for React's `className` attribute in JavaScript, JavaScript React (.jsx) and TypeScript React files (.tsx). Thanks to github.com/JanneHarju.
+
 ### 1.0.3 (Sep 27, 2016)
 * Fixed error showing up whenever there were no workspace opened
 
