@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 
 class Notifier {
-    private _timeoutId: number;
+    private _timeoutId: NodeJS.Timer;
 
     public statusBarItem: vscode.StatusBarItem;
 
