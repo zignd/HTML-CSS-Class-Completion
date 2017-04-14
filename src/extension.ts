@@ -225,6 +225,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             // Regex to extract the classes found of the class attribute
             var classesRegex: RegExp = /[ ]*([\w-]*)[ ]*/g;
 
+            
             var item: RegExpExecArray = null;
             while ((item = classesRegex.exec(rawClasses[1])) !== null) {
                 if (item.index === classesRegex.lastIndex) {
