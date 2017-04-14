@@ -1,6 +1,5 @@
 'use strict';
 
-import * as async from 'async';
 import * as _ from 'lodash';
 import * as vscode from 'vscode';
 import CssClassDefinition from './common/css-class-definition';
@@ -12,61 +11,56 @@ import ParseEngineGateway from './parse-engine-gateway';
 let notifier: Notifier = new Notifier('html-css-class-completion.cache');
 let uniqueDefinitions: CssClassDefinition[];
 
-function cache(): Promise<void> {
-    return new Promise<void>(async (resolve, reject): Promise<void> => {
+async function cache(): Promise<void> {
+    try {
+        notifier.notify('eye', 'Looking for CSS classes on the workspace...');
+
+        console.log('Looking for parseable documents...');
+        let uris: vscode.Uri[] = await Fetcher.findAllParseableDocuments();
+
+        if (!uris) {
+            console.log("Found no documents");
+            notifier.statusBarItem.hide();
+            return;
+        }
+
+        console.log('Found all parseable documents.');
+        let definitions: CssClassDefinition[] = [];
+
+        let failedLogs: string = '';
+        let failedLogsCount: number = 0;
+
+        console.log('Parsing documents and looking for CSS class definitions...');
+
         try {
-            notifier.notify('eye', 'Looking for CSS classes on the workspace...');
-
-            console.log('Looking for parseable documents...');
-            let uris: vscode.Uri[] = await Fetcher.findAllParseableDocuments();
-
-            if (!uris) {
-                console.log("Found no documents");
-                notifier.statusBarItem.hide();
-                return;
-            }
-
-            console.log('Found all parseable documents.');
-            let definitions: CssClassDefinition[] = [];
-
-            let failedLogs: string = '';
-            let failedLogsCount: number = 0;
-
-            console.log('Parsing documents and looking for CSS class definitions...');
-            return async.each(uris, async (uri, callback) => {
+            await Promise.all(uris.map(async (uri: vscode.Uri) => {
                 try {
-                    Array.prototype.push.apply(definitions, await ParseEngineGateway.callParser(uri));
-                    callback();
+                    definitions.push(...await ParseEngineGateway.callParser(uri))
                 } catch (error) {
                     failedLogs += `${uri.path}\n`;
                     failedLogsCount++;
-                    callback();
                 }
-            }, (error) => {
-                if (error) {
-                    console.error('Failed to parse the documents: ', error);
-                    return reject(error);
-                }
-
-                uniqueDefinitions = _.uniqBy(definitions, (x) => x.className);
-
-                console.log('Sumary:');
-                console.log(uris.length, 'parseable documents found');
-                console.log(definitions.length, 'CSS class definitions found');
-                console.log(uniqueDefinitions.length, 'unique CSS class definitions found');
-                console.log(failedLogsCount, 'failed attempts to parse. List of the documents:');
-                console.log(failedLogs);
-
-                notifier.notify('zap', 'CSS classes cached (click to cache again)');
-
-                return resolve();
-            });
+            }));
         } catch (error) {
-            console.error('Failed while looping through the documents to cache the classes definitions:', error);
-            notifier.notify('alert', 'Failed to cache the CSS classes on the workspace (click for another attempt)');
-            return reject(error);
+            console.error('Failed to parse the documents: ', error);
+            throw error;
         }
-    });
+
+        uniqueDefinitions = _.uniqBy(definitions, (x: CssClassDefinition) => x.className);
+
+        console.log('Sumary:');
+        console.log(uris.length, 'parseable documents found');
+        console.log(definitions.length, 'CSS class definitions found');
+        console.log(uniqueDefinitions.length, 'unique CSS class definitions found');
+        console.log(failedLogsCount, 'failed attempts to parse. List of the documents:');
+        console.log(failedLogs);
+
+        notifier.notify('zap', 'CSS classes cached (click to cache again)');
+    } catch (error) {
+        console.error('Failed while looping through the documents to cache the classes definitions:', error);
+        notifier.notify('alert', 'Failed to cache the CSS classes on the workspace (click for another attempt)');
+        throw error;
+    }
 }
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {

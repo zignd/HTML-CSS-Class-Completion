@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 
 class Notifier {
-    private _timeoutId: number;
+    private _timeoutId: any;
 
     public statusBarItem: vscode.StatusBarItem;
 
