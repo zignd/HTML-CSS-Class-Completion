@@ -37,12 +37,12 @@
         "@types/css": "^0.0.30",
         "@types/lodash": "^4.14.63",
         "@types/mocha": "^2.2.41",
-        "@types/node": "^7.0.14",
-        "typescript": "^2.0.0",
+        "@types/node": "^7.0.18",
+        "typescript": "^2.3.2",
         "vscode": "^1.1.0"
     },
     "dependencies": {
-        "async": "^2.0.1",
+        "async": "^2.4.0",
         "css": "^2.2.1"
     }
 }
