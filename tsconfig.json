@@ -5,6 +5,7 @@
         "outDir": "out",
         "noLib": true,
         "sourceMap": true,
+        "alwaysStrict": true,
         "rootDir": ".",
         "noImplicitAny": true,
         "noImplicitReturns": true,

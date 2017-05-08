@@ -1,5 +1,3 @@
-'use strict';
-
 import * as css from 'css';
 import * as vscode from 'vscode';
 import CssClassDefinition from '../../common/css-class-definition';

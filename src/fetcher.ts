@@ -1,5 +1,3 @@
-'use strict';
-
 import * as vscode from 'vscode';
 import ParseEngineRegistry from './parse-engines/parse-engine-registry';
 

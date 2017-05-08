@@ -1,5 +1,3 @@
-'use strict';
-
 import ParseEngine from './common/parse-engine';
 import CssParseEngine from './types/css-parse-engine';
 

@@ -1,5 +1,3 @@
-'use strict';
-
 import CssClassDefinition from './common/css-class-definition';
 
 class CssClassesStorage {
