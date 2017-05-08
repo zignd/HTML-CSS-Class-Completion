@@ -98,7 +98,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
             return completionItems;
         }
-    }, '"', "'");
+    });
 }
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
