@@ -2,7 +2,7 @@ import * as css from 'css';
 import * as vscode from 'vscode';
 import CssClassDefinition from '../../common/css-class-definition';
 import ParseEngine from '../common/parse-engine';
-import CssClassExtractor from "../common/css-class-extractor";
+import CssClassExtractor from '../common/css-class-extractor';
 
 class CssParseEngine implements ParseEngine {
     public languageId: string = 'css';
