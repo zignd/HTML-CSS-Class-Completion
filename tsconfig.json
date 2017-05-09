@@ -4,6 +4,7 @@
         "target": "es6",
         "outDir": "out",
         "sourceMap": true,
+        "alwaysStrict": true,
         "rootDir": ".",
         "noImplicitAny": true,
         "noImplicitReturns": true,

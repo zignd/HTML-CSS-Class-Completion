@@ -1,5 +1,3 @@
-'use strict';
-
 import * as async from 'async';
 import * as _ from 'lodash';
 import * as vscode from 'vscode';
@@ -48,14 +46,13 @@ function cache(): Promise<void> {
                     return reject(error);
                 }
 
-                uniqueDefinitions = _.uniqBy(definitions, (x) => x.className);
+                uniqueDefinitions = _.uniqBy(definitions, def => def.className);
 
-                console.log('Sumary:');
+                console.log('Summary:');
                 console.log(uris.length, 'parseable documents found');
                 console.log(definitions.length, 'CSS class definitions found');
                 console.log(uniqueDefinitions.length, 'unique CSS class definitions found');
                 console.log(failedLogsCount, 'failed attempts to parse. List of the documents:');
-                console.log(failedLogs);
 
                 notifier.notify('zap', 'CSS classes cached (click to cache again)');
 
@@ -69,198 +66,60 @@ function cache(): Promise<void> {
     });
 }
 
+function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp) {
+    return vscode.languages.registerCompletionItemProvider(languageSelector, {
+        provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
+            const start: vscode.Position = new vscode.Position(position.line, 0);
+            const range: vscode.Range = new vscode.Range(start, position);
+            const text: string = document.getText(range);
+
+            // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
+            const rawClasses: RegExpMatchArray = text.match(classMatchRegex);
+            if (rawClasses.length === 1) {
+                return [];
+            }
+
+            // Will store the classes found on the class attribute
+            let classesOnAttribute = rawClasses[1].split(' ');
+
+            // Creates a collection of CompletionItem based on the classes already cached
+            let completionItems = uniqueDefinitions.map(definition => {
+                return new vscode.CompletionItem(definition.className, vscode.CompletionItemKind.Variable);
+            });
+
+            // Removes from the collection the classes already specified on the class attribute
+            for (let i = 0; i < classesOnAttribute.length; i++) {
+                for (let j = 0; j < completionItems.length; j++) {
+                    if (completionItems[j].label === classesOnAttribute[i]) {
+                        completionItems.splice(j, 1);
+                    }
+                }
+            }
+
+            return completionItems;
+        }
+    });
+}
+
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     context.subscriptions.push(vscode.commands.registerCommand('html-css-class-completion.cache', async () => {
         await cache();
     }));
 
+    const htmlRegex = /class=["|']([\w- ]*$)/;
+    const jsxRegex = /className=["|']([\w- ]*$)/;
+
+    const html = provideCompletionItemsGenerator('html', htmlRegex)
+    const tsReact = provideCompletionItemsGenerator('typescriptreact', jsxRegex);
+    const js = provideCompletionItemsGenerator('javascript', jsxRegex)
+    const jsReact = provideCompletionItemsGenerator('javascriptreact', jsxRegex);
+
+    context.subscriptions.push(html);
+    context.subscriptions.push(tsReact);
+    context.subscriptions.push(js);
+    context.subscriptions.push(jsReact);
+
     await cache();
-
-    context.subscriptions.push(vscode.languages.registerCompletionItemProvider('html', {
-        provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
-            let start: vscode.Position = new vscode.Position(position.line, 0);
-            let range: vscode.Range = new vscode.Range(start, position);
-            let text: string = document.getText(range);
-
-            // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
-            let rawClasses: RegExpMatchArray = text.match(/class=["|']([\w- ]*$)/);
-            if (rawClasses === null) {
-                return [];
-            }
-
-            // Will store the classes found on the class attribute
-            var classesOnAttribute: string[] = [];
-            // Regex to extract the classes found of the class attribute
-            var classesRegex: RegExp = /[ ]*([\w-]*)[ ]*/g;
-
-            var item: RegExpExecArray = null;
-            while ((item = classesRegex.exec(rawClasses[1])) !== null) {
-                if (item.index === classesRegex.lastIndex) {
-                    classesRegex.lastIndex++;
-                }
-                if (item !== null && item.length > 0) {
-                    classesOnAttribute.push(item[1]);
-                }
-            }
-            classesOnAttribute.pop();
-
-            // Creates a collection of CompletionItem based on the classes already cached
-            var completionItems: vscode.CompletionItem[] = [];
-            for (var i = 0; i < uniqueDefinitions.length; i++) {
-                completionItems.push(new vscode.CompletionItem(uniqueDefinitions[i].className, vscode.CompletionItemKind.Variable));
-            }
-
-            // Removes from the collection the classes already specified on the class attribute
-            for (var i = 0; i < classesOnAttribute.length; i++) {
-                for (var j = 0; j < completionItems.length; j++) {
-                    if (completionItems[j].label === classesOnAttribute[i]) {
-                        completionItems.splice(j, 1);
-                    }
-                }
-            }
-
-            return completionItems;
-        }
-    }));
-    context.subscriptions.push(vscode.languages.registerCompletionItemProvider('typescriptreact', {
-        provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
-            let start: vscode.Position = new vscode.Position(position.line, 0);
-            let range: vscode.Range = new vscode.Range(start, position);
-            let text: string = document.getText(range);
-
-            // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
-            let rawClasses: RegExpMatchArray = text.match(/className=["|']([\w- ]*$)/);
-            if (rawClasses === null) {
-                return [];
-            }
-
-            // Will store the classes found on the class attribute
-            var classesOnAttribute: string[] = [];
-            // Regex to extract the classes found of the class attribute
-            var classesRegex: RegExp = /[ ]*([\w-]*)[ ]*/g;
-
-            var item: RegExpExecArray = null;
-            while ((item = classesRegex.exec(rawClasses[1])) !== null) {
-                if (item.index === classesRegex.lastIndex) {
-                    classesRegex.lastIndex++;
-                }
-                if (item !== null && item.length > 0) {
-                    classesOnAttribute.push(item[1]);
-                }
-            }
-            classesOnAttribute.pop();
-
-            // Creates a collection of CompletionItem based on the classes already cached
-            var completionItems: vscode.CompletionItem[] = [];
-            for (var i = 0; i < uniqueDefinitions.length; i++) {
-                completionItems.push(new vscode.CompletionItem(uniqueDefinitions[i].className, vscode.CompletionItemKind.Variable));
-            }
-
-            // Removes from the collection the classes already specified on the class attribute
-            for (var i = 0; i < classesOnAttribute.length; i++) {
-                for (var j = 0; j < completionItems.length; j++) {
-                    if (completionItems[j].label === classesOnAttribute[i]) {
-                        completionItems.splice(j, 1);
-                    }
-                }
-            }
-
-            return completionItems;
-        }
-    }));
-    context.subscriptions.push(vscode.languages.registerCompletionItemProvider('javascript', {
-        provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
-            let start: vscode.Position = new vscode.Position(position.line, 0);
-            let range: vscode.Range = new vscode.Range(start, position);
-            let text: string = document.getText(range);
-
-            // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
-            let rawClasses: RegExpMatchArray = text.match(/className=["|']([\w- ]*$)/);
-            if (rawClasses === null) {
-                return [];
-            }
-
-            // Will store the classes found on the class attribute
-            var classesOnAttribute: string[] = [];
-            // Regex to extract the classes found of the class attribute
-            var classesRegex: RegExp = /[ ]*([\w-]*)[ ]*/g;
-
-            var item: RegExpExecArray = null;
-            while ((item = classesRegex.exec(rawClasses[1])) !== null) {
-                if (item.index === classesRegex.lastIndex) {
-                    classesRegex.lastIndex++;
-                }
-                if (item !== null && item.length > 0) {
-                    classesOnAttribute.push(item[1]);
-                }
-            }
-            classesOnAttribute.pop();
-
-            // Creates a collection of CompletionItem based on the classes already cached
-            var completionItems: vscode.CompletionItem[] = [];
-            for (var i = 0; i < uniqueDefinitions.length; i++) {
-                completionItems.push(new vscode.CompletionItem(uniqueDefinitions[i].className, vscode.CompletionItemKind.Variable));
-            }
-
-            // Removes from the collection the classes already specified on the class attribute
-            for (var i = 0; i < classesOnAttribute.length; i++) {
-                for (var j = 0; j < completionItems.length; j++) {
-                    if (completionItems[j].label === classesOnAttribute[i]) {
-                        completionItems.splice(j, 1);
-                    }
-                }
-            }
-
-            return completionItems;
-        }
-    }));
-    context.subscriptions.push(vscode.languages.registerCompletionItemProvider('javascriptreact', {
-        provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
-            let start: vscode.Position = new vscode.Position(position.line, 0);
-            let range: vscode.Range = new vscode.Range(start, position);
-            let text: string = document.getText(range);
-
-            // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
-            let rawClasses: RegExpMatchArray = text.match(/className=["|']([\w- ]*$)/);
-            if (rawClasses === null) {
-                return [];
-            }
-
-            // Will store the classes found on the class attribute
-            var classesOnAttribute: string[] = [];
-            // Regex to extract the classes found of the class attribute
-            var classesRegex: RegExp = /[ ]*([\w-]*)[ ]*/g;
-
-            
-            var item: RegExpExecArray = null;
-            while ((item = classesRegex.exec(rawClasses[1])) !== null) {
-                if (item.index === classesRegex.lastIndex) {
-                    classesRegex.lastIndex++;
-                }
-                if (item !== null && item.length > 0) {
-                    classesOnAttribute.push(item[1]);
-                }
-            }
-            classesOnAttribute.pop();
-
-            // Creates a collection of CompletionItem based on the classes already cached
-            var completionItems: vscode.CompletionItem[] = [];
-            for (var i = 0; i < uniqueDefinitions.length; i++) {
-                completionItems.push(new vscode.CompletionItem(uniqueDefinitions[i].className, vscode.CompletionItemKind.Variable));
-            }
-
-            // Removes from the collection the classes already specified on the class attribute
-            for (var i = 0; i < classesOnAttribute.length; i++) {
-                for (var j = 0; j < completionItems.length; j++) {
-                    if (completionItems[j].label === classesOnAttribute[i]) {
-                        completionItems.splice(j, 1);
-                    }
-                }
-            }
-
-            return completionItems;
-        }
-    }));
 }
 
 export function deactivate(): void {

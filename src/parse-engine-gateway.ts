@@ -1,5 +1,3 @@
-'use strict';
-
 import * as vscode from 'vscode';
 import CssClassDefinition from './common/css-class-definition';
 import ParseEngine from './parse-engines/common/parse-engine';
