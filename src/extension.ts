@@ -10,6 +10,8 @@ import ParseEngineGateway from './parse-engine-gateway';
 let notifier: Notifier = new Notifier('html-css-class-completion.cache');
 let uniqueDefinitions: CssClassDefinition[];
 
+const completionTriggerChars = ['"', '\'', ' '];
+
 function cache(): Promise<void> {
     return new Promise<void>(async (resolve, reject): Promise<void> => {
         try {
@@ -98,7 +100,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
             return completionItems;
         }
-    });
+    }, ...completionTriggerChars);
 }
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
