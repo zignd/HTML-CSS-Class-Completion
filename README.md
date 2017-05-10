@@ -17,15 +17,12 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 
 You can request new features on the [extension repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues).
 
-## Changelog
-### 1.1.0 (Apr 14, 2017)
-* Added support for React's `className` attribute in JavaScript, JavaScript React (.jsx) and TypeScript React files (.tsx). Thanks to github.com/JanneHarju.
+## What's new in version 1.2.0 (Mai 9, 2017)
+### 1.2.0 (Mai 9, 2017)
+* Now completion gets triggered when you open single quotes, double quotes or types a space character". Thanks to github.com/allevaton.
+* Internal refactors. Thanks to github.com/allevaton.
 
-### 1.0.3 (Sep 27, 2016)
-* Fixed error showing up whenever there were no workspace opened
-
-### 1.0.2 (Sep 17, 2016)
-* Refactored to add proper asynchronous parallel parsing of the documents
+Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/1.2.0/CHANGELOG.md) for all updates.
 
 ## Usage
 If there are HTML files on your workspace the extension automatically starts and look for CSS class definitions. In case new CSS classes are definined or new CSS files are added to the workspace and you also want auto completion for them simply hit the lightning icon you will find on the status bar and execute the command pressing `Ctrl+Shift+P` and then typing "Cache CSS class definitions".
