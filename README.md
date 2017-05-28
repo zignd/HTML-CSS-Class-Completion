@@ -17,7 +17,10 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 
 You can request new features on the [extension repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues).
 
-## What's new in version 1.2.0 (Mai 9, 2017)
+## What's new in version 1.2.x (Mai 28, 2017)
+### 1.2.1 (Mai 28, 2017)
+* Rolling back a change that was causing node_modules to be ignored.
+
 ### 1.2.0 (Mai 9, 2017)
 * Now completion gets triggered when you open single quotes, double quotes or types a space character". Thanks to github.com/allevaton.
 * Internal refactors. Thanks to github.com/allevaton.
