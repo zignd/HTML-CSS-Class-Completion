@@ -111,12 +111,14 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     const htmlRegex = /class=["|']([\w- ]*$)/;
     const jsxRegex = /className=["|']([\w- ]*$)/;
 
-    const html = provideCompletionItemsGenerator('html', htmlRegex)
+    const html = provideCompletionItemsGenerator('html', htmlRegex);
+    const vue = provideCompletionItemsGenerator('vue', htmlRegex);
     const tsReact = provideCompletionItemsGenerator('typescriptreact', jsxRegex);
     const js = provideCompletionItemsGenerator('javascript', jsxRegex)
     const jsReact = provideCompletionItemsGenerator('javascriptreact', jsxRegex);
 
     context.subscriptions.push(html);
+    context.subscriptions.push(vue);
     context.subscriptions.push(tsReact);
     context.subscriptions.push(js);
     context.subscriptions.push(jsReact);
