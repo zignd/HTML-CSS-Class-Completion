@@ -1,3 +1,6 @@
+### 1.3.0 (Jun 1, 2017)
+* Added support for Vue Single File Components. Thanks to github.com/bypatryk.
+
 ### 1.2.1 (Mai 28, 2017)
 * Rolling back a change that was causing node_modules to be ignored.
 
