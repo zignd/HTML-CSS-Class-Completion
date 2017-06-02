@@ -1,3 +1,6 @@
+### 1.4.0 (Jun 3, 2017)
+* Added support for Razor and PHP.
+
 ### 1.3.0 (Jun 1, 2017)
 * Added support for Vue Single File Components. Thanks to github.com/bypatryk.
 
