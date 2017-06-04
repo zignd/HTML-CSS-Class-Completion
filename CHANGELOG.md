@@ -1,3 +1,6 @@
+### 1.5.0 (Jun 4, 2017)
+* Added support for external stylesheets referecend through `link` elements in HTML files.
+
 ### 1.4.0 (Jun 3, 2017)
 * Added support for Razor and PHP.
 

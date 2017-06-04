@@ -6,8 +6,6 @@ export default class CssClassExtractor {
      * @description Extracts class names from CSS AST
      */
     static extract(ast: css.Stylesheet): CssClassDefinition[] {
-        // TODO can we make this asynchronous?
-
         const classNameRegex: RegExp = /[.]([\w-]+)/g;
 
         let definitions: CssClassDefinition[] = [];

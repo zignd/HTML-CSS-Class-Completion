@@ -55,6 +55,7 @@ function cache(): Promise<void> {
                 console.log(definitions.length, 'CSS class definitions found');
                 console.log(uniqueDefinitions.length, 'unique CSS class definitions found');
                 console.log(failedLogsCount, 'failed attempts to parse. List of the documents:');
+                console.log(failedLogs);
 
                 notifier.notify('zap', 'CSS classes cached (click to cache again)');
 

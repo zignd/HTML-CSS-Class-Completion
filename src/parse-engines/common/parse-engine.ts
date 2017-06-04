@@ -3,7 +3,8 @@ import CssClassDefinition from './../../common/css-class-definition';
 
 interface ParseEngine {
     languageId: string;
-    parse(textDocument: vscode.TextDocument): CssClassDefinition[];
+    extension: string;
+    parse(textDocument: vscode.TextDocument): Promise<CssClassDefinition[]>;
 }
 
 export default ParseEngine;
