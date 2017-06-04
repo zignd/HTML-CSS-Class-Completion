@@ -1,3 +1,6 @@
+### 1.6.0 (Jun 4, 2017)
+* Added support for Twig.
+
 ### 1.5.0 (Jun 4, 2017)
 * Added support for external stylesheets referecend through `link` elements in HTML files.
 

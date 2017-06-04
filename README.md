@@ -17,9 +17,13 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * JavaScript React (.jsx)
 * TypeScript React (.tsx)
 * Vue (.vue) [requires [vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur)]
+* Twig
 
 ## Contributions
 You can request new features and/or contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues).
+
+## What's new in version 1.6.0 (Jun 4, 2017)
+* Added support for Twig.
 
 ## What's new in version 1.5.0 (Jun 4, 2017)
 * Added support for external stylesheets referecend through `link` elements in HTML files.
