@@ -1,3 +1,6 @@
+### 1.7.0 (Jun 8, 2017)
+* Added support for Markdown
+
 ### 1.6.0 (Jun 4, 2017)
 * Added support for Twig.
 
