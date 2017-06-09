@@ -117,7 +117,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     const php = provideCompletionItemsGenerator('php', htmlRegex);
     const vue = provideCompletionItemsGenerator('vue', htmlRegex);
     const twig = provideCompletionItemsGenerator('twig', htmlRegex);
-    const md = provideCompletionItemsGenerator('md', htmlRegex);
+    const md = provideCompletionItemsGenerator('markdown', htmlRegex);
     const tsReact = provideCompletionItemsGenerator('typescriptreact', jsxRegex);
     const js = provideCompletionItemsGenerator('javascript', jsxRegex)
     const jsReact = provideCompletionItemsGenerator('javascriptreact', jsxRegex);
