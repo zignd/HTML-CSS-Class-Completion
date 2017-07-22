@@ -1,3 +1,6 @@
+## What's new in version 1.8.0 (Jul 22, 2017)
+* Added support for Embedded Ruby (.html.erb).
+
 ### 1.7.0 (Jun 9, 2017)
 * Added support for Markdown.
 

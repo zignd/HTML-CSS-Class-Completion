@@ -16,15 +16,16 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * JavaScript
 * JavaScript React (.jsx)
 * TypeScript React (.tsx)
-* Vue (.vue) [requires [vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur)]
+* Vue (.vue) [requires [octref.vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur)]
 * Twig
 * Markdown (.md)
+* Embedded Ruby (.html.erb) [requires [rebornix.Ruby](https://marketplace.visualstudio.com/items?itemName=rebornix.Ruby)]
 
 ## Contributions
 You can request new features and/or contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues).
 
-## What's new in version 1.7.0 (Jun 9, 2017)
-* Added support for Markdown.
+## What's new in version 1.8.0 (Jul 22, 2017)
+* Added support for Embedded Ruby (.html.erb).
 
 Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/1.7.0/CHANGELOG.md) for the current and previous updates.
 
