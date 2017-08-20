@@ -78,7 +78,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
             // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
             const rawClasses: RegExpMatchArray = text.match(classMatchRegex);
-            if (rawClasses.length === 1) {
+            if (!rawClasses || rawClasses.length === 1) {
                 return [];
             }
 
