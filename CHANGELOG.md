@@ -1,4 +1,7 @@
-## What's new in version 1.8.0 (Jul 22, 2017)
+### What's new in version 1.8.1 (Ago 20, 2017)
+* Small parsing related fix.
+
+### 1.8.0 (Jul 22, 2017)
 * Added support for Embedded Ruby (.html.erb).
 
 ### 1.7.0 (Jun 9, 2017)
