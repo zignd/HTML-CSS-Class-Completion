@@ -1,0 +1,1 @@
+You can request new features and/or contribute to the extension development on its repository on GitHub. Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
