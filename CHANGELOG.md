@@ -1,4 +1,7 @@
-### What's new in version 1.8.1 (Ago 20, 2017)
+### 1.9.0 (Ago 27, 2017)
+* Added support for Handlebars.
+
+### 1.8.1 (Ago 20, 2017)
 * Small parsing related fix.
 
 ### 1.8.0 (Jul 22, 2017)
