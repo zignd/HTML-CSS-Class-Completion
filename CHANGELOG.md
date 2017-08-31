@@ -1,7 +1,6 @@
 ### 1.10.0 (Ago 27, 2017)
 * Added support for EJS.
 
-
 ### 1.9.0 (Ago 27, 2017)
 * Added support for Handlebars.
 
