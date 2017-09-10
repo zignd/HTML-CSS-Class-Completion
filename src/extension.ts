@@ -123,6 +123,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     const jsReact = provideCompletionItemsGenerator('javascriptreact', jsxRegex);
     const erb = provideCompletionItemsGenerator('erb', htmlRegex);
     const hbs = provideCompletionItemsGenerator('handlebars', htmlRegex);
+    const ejs = provideCompletionItemsGenerator('ejs', htmlRegex);
 
     context.subscriptions.push(html);
     context.subscriptions.push(razor);
@@ -135,6 +136,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     context.subscriptions.push(jsReact);
     context.subscriptions.push(erb);
     context.subscriptions.push(hbs);
+    context.subscriptions.push(ejs);
 
     await cache();
 }
