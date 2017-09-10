@@ -21,12 +21,13 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * Markdown (.md)
 * Embedded Ruby (.html.erb) [requires [rebornix.Ruby](https://marketplace.visualstudio.com/items?itemName=rebornix.Ruby)]
 * Handlebars
+* EJS (.ejs)
 
 ## Contributions
 You can request new features and/or contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues). Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
 
-## What's new in version 1.9.0 (Ago 27, 2017)
-* Added support for Handlebars.
+## What's new in version 1.10.0 (Set 9, 2017)
+* Added support for EJS.
 
 Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
 
