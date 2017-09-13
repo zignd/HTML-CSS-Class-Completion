@@ -12,7 +12,7 @@ let uniqueDefinitions: CssClassDefinition[];
 
 const completionTriggerChars = ['"', '\'', ' '];
 
-const config = vscode.workspace.getConfiguration('html-css-class-completion');
+let config = vscode.workspace.getConfiguration('html-css-class-completion');
 const enabledForEmmet = config.get('enabledForEmmet');
 if(enabledForEmmet) completionTriggerChars.push('.');
 
@@ -112,6 +112,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     context.subscriptions.push(vscode.commands.registerCommand('html-css-class-completion.cache', async () => {
         await cache();
     }));
+
+    vscode.workspace.onDidChangeConfiguration(() => {
+        config = vscode.workspace.getConfiguration('html-css-class-completion');
+        if(enabledForEmmet !== config.get('enabledForEmmet'))
+            vscode.window.showInformationMessage('Please restart the editor for changes to take effect.')
+    });
 
     const htmlRegex = /class=["|']([\w- ]*$)/;
     const jsxRegex = /className=["|']([\w- ]*$)/;
