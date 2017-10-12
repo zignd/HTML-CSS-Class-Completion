@@ -1,3 +1,7 @@
+### 1.10.2 (Out 12, 2017)
+* Temporary fix to prevent high CPU usage. The `node_modules` will be ignored in the search for CSS class definitions. [Link to the issue containing detailed information.](https://github.com/Microsoft/vscode/issues/35996)
+* Fix possibility to run the caching process multiple times simultaneously.
+
 ### 1.10.1 (Out 12, 2017)
 * Temporary fix to prevent high CPU usage. The `node_modules` will be ignored in the search for CSS class definitions. [Link to the issue containing detailed information.](https://github.com/Microsoft/vscode/issues/35996)
 
