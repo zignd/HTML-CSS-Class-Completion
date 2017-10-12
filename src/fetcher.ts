@@ -5,7 +5,7 @@ class Fetcher {
     static async findAllParseableDocuments(): Promise<vscode.Uri[]> {
         const languages = ParseEngineRegistry.supportedLanguagesIds.join(',');
 
-        return await vscode.workspace.findFiles(`**/*.{${languages}}`, '**/node_modules');
+        return await vscode.workspace.findFiles(`**/*.{${languages}}`, '');
     }
 }
 

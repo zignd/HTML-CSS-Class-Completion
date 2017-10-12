@@ -12,10 +12,12 @@ let uniqueDefinitions: CssClassDefinition[];
 
 const completionTriggerChars = ['"', '\'', ' '];
 
+let caching: boolean = false;
+
 function cache(): Promise<void> {
     return new Promise<void>(async (resolve, reject): Promise<void> => {
         try {
-            notifier.notify('eye', 'Looking for CSS classes on the workspace...');
+            notifier.notify('eye', 'Looking for CSS classes in the workspace...');
 
             console.log('Looking for parseable documents...');
             let uris: vscode.Uri[] = await Fetcher.findAllParseableDocuments();
@@ -62,8 +64,8 @@ function cache(): Promise<void> {
                 return resolve();
             });
         } catch (error) {
-            console.error('Failed while looping through the documents to cache the classes definitions:', error);
-            notifier.notify('alert', 'Failed to cache the CSS classes on the workspace (click for another attempt)');
+            console.error('Failed to cache the class definitions during the iterations over the documents that were found:', error);
+            notifier.notify('alert', 'Failed to cache the CSS classes in the workspace (click for another attempt)');
             return reject(error);
         }
     });
@@ -106,7 +108,15 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     context.subscriptions.push(vscode.commands.registerCommand('html-css-class-completion.cache', async () => {
-        await cache();
+        if (caching)
+            return;
+
+        caching = true;
+        try {
+            await cache();
+        } finally {
+            caching = false;
+        }
     }));
 
     const htmlRegex = /class=["|']([\w- ]*$)/;
@@ -138,10 +148,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     context.subscriptions.push(hbs);
     context.subscriptions.push(ejs);
 
-    await cache();
+    caching = true;
+    try {
+        await cache();
+    } finally {
+        caching = false;
+    }
 }
 
 export function deactivate(): void {
 }
-
-// TODO: Look for CSS class definitions automatically in case a new file is added to the workspace. I think the API does not provide and event for that. Maybe I should consider opening a PR.
