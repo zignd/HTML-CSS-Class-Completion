@@ -33,7 +33,7 @@ function cache(): Promise<void> {
             let failedLogsCount: number = 0;
 
             console.log('Parsing documents and looking for CSS class definitions...');
-            return async.each(uris, async (uri, callback) => {
+            return async.eachLimit(uris, 100, async (uri, callback) => {
                 try {
                     Array.prototype.push.apply(definitions, await ParseEngineGateway.callParser(uri));
                     callback();
