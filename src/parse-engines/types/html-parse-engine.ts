@@ -6,12 +6,13 @@ import * as vscode from 'vscode';
 import CssClassDefinition from '../../common/css-class-definition';
 import CssClassExtractor from '../common/css-class-extractor';
 import ParseEngine from '../common/parse-engine';
+import SimpleTextDocument from '../common/simple-textdocument';
 
 class HtmlParseEngine implements ParseEngine {
     public languageId: string = 'html';
     public extension: string = 'html';
 
-    public parse(textDocument: vscode.TextDocument): Promise<CssClassDefinition[]> {
+    public parse(textDocument: SimpleTextDocument): Promise<CssClassDefinition[]> {
         return new Promise((resolve, reject) => {
             const definitions: CssClassDefinition[] = [];
             const urls: string[] = [];

@@ -1,10 +1,10 @@
-import * as vscode from 'vscode';
 import CssClassDefinition from './../../common/css-class-definition';
+import SimpleTextDocument from './simple-textdocument';
 
 interface ParseEngine {
     languageId: string;
     extension: string;
-    parse(textDocument: vscode.TextDocument): Promise<CssClassDefinition[]>;
+    parse(textDocument: SimpleTextDocument): Promise<CssClassDefinition[]>;
 }
 
 export default ParseEngine;
