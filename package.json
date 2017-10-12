@@ -20,7 +20,18 @@
                 "command": "html-css-class-completion.cache",
                 "title": "Cache CSS class definitions"
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "html-css-class-completion configuration",
+            "properties": {
+                "html-css-class-completion.enabledForEmmet": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable/Disable autocompletion for emmet snippets."
+                }
+            }
+        }
     },
     "icon": "images/icon.png",
     "repository": {

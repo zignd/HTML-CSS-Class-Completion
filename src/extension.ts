@@ -12,6 +12,10 @@ let uniqueDefinitions: CssClassDefinition[];
 
 const completionTriggerChars = ['"', '\'', ' '];
 
+let config = vscode.workspace.getConfiguration('html-css-class-completion');
+const enabledForEmmet = config.get('enabledForEmmet');
+if(enabledForEmmet) completionTriggerChars.push('.');
+
 function cache(): Promise<void> {
     return new Promise<void>(async (resolve, reject): Promise<void> => {
         try {
@@ -83,7 +87,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
             }
 
             // Will store the classes found on the class attribute
-            let classesOnAttribute = rawClasses[1].split(' ');
+            let classesOnAttribute = rawClasses[1].split(/[\.| ]/);
 
             // Creates a collection of CompletionItem based on the classes already cached
             let completionItems = uniqueDefinitions.map(definition => {
@@ -108,6 +112,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     context.subscriptions.push(vscode.commands.registerCommand('html-css-class-completion.cache', async () => {
         await cache();
     }));
+
+    vscode.workspace.onDidChangeConfiguration(() => {
+        config = vscode.workspace.getConfiguration('html-css-class-completion');
+        if(enabledForEmmet !== config.get('enabledForEmmet'))
+            vscode.window.showInformationMessage('Please restart the editor for changes to take effect.')
+    });
 
     const htmlRegex = /class=["|']([\w- ]*$)/;
     const jsxRegex = /className=["|']([\w- ]*$)/;
@@ -137,6 +147,20 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     context.subscriptions.push(erb);
     context.subscriptions.push(hbs);
     context.subscriptions.push(ejs);
+
+    // Support for Emmet Snippets
+    if(enabledForEmmet) {
+        const emmetRegex = /(?=\.)([\w-\. ]*$)/;
+        const languages = [
+            'html',
+            'php',
+            'handlebars'
+        ];
+
+        languages.forEach((language) => {
+            context.subscriptions.push(provideCompletionItemsGenerator(language, emmetRegex));
+        });
+    }
 
     await cache();
 }
