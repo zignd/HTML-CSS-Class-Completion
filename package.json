@@ -2,7 +2,7 @@
   "name": "html-css-class-completion",
   "displayName": "IntelliSense for CSS class names",
   "description": "Provides CSS class name completion for the HTML class attribute based on the CSS files in your workspace. Also supports React's className attribute.",
-  "version": "1.10.2",
+  "version": "1.11.0",
   "publisher": "Zignd",
   "engines": {
     "vscode": "^1.4.0"

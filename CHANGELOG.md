@@ -1,3 +1,9 @@
+### 1.11.0 (Out 14, 2017)
+* Fix error that occurs when you try to get completion and the extension is loading.
+* Add limitations to the concurrency in resource-intensive operations.
+* Add progress indicator, useful for large projects.
+* The `node_modules` will not be ignored. With those changes, it seems that there's no need to ignore it.
+
 ### 1.10.2 (Out 12, 2017)
 * Temporary fix to prevent high CPU usage. The `node_modules` will be ignored in the search for CSS class definitions. [Link to the issue containing detailed information.](https://github.com/Microsoft/vscode/issues/35996)
 * Fix possibility to run the caching process multiple times simultaneously.

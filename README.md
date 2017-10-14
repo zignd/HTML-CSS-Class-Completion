@@ -26,9 +26,11 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 ## Contributions
 You can request new features and/or contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues). Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
 
-## What's new in version 1.10.2 (Out 12, 2017)
-* Temporary fix to prevent high CPU usage. The `node_modules` will be ignored in the search for CSS class definitions. [Link to the issue containing detailed information.](https://github.com/Microsoft/vscode/issues/35996)
-* Fix possibility to run the caching process multiple times simultaneously.
+## What's new in version 1.11.0 (Out 14, 2017)
+* Fix error that occurs when you try to get completion and the extension is loading.
+* Add limitations to the concurrency in resource-intensive operations.
+* Add progress indicator, useful for large projects.
+* The `node_modules` will not be ignored. With those changes, it seems that there's no need to ignore it.
 
 Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
 
