@@ -1,54 +1,54 @@
 {
-    "name": "html-css-class-completion",
-    "displayName": "IntelliSense for CSS class names",
-    "description": "Provides CSS class name completion for the HTML class attribute based on the CSS files in your workspace. Also supports React's className attribute.",
-    "version": "1.10.2",
-    "publisher": "Zignd",
-    "engines": {
-        "vscode": "^1.4.0"
-    },
-    "categories": [
-        "Languages",
-        "Other"
-    ],
-    "activationEvents": [
-        "*"
-    ],
-    "contributes": {
-        "commands": [
-            {
-                "command": "html-css-class-completion.cache",
-                "title": "Cache CSS class definitions"
-            }
-        ]
-    },
-    "icon": "images/icon.png",
-    "repository": {
-        "url": "https://github.com/Zignd/HTML-CSS-Class-Completion"
-    },
-    "main": "./out/src/extension",
-    "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
-    },
-    "devDependencies": {
-        "@types/async": "^2.0.40",
-        "@types/css": "^0.0.30",
-        "@types/htmlparser2": "^3.7.29",
-        "@types/lodash": "^4.14.63",
-        "@types/mocha": "^2.2.41",
-        "@types/node": "^7.0.18",
-        "@types/request": "^0.0.43",
-        "@types/request-promise": "^4.1.33",
-        "typescript": "^2.3.2",
-        "vscode": "^1.1.0"
-    },
-    "dependencies": {
-        "async": "^2.4.0",
-        "css": "^2.2.1",
-        "htmlparser2": "^3.9.2",
-        "request": "^2.81.0",
-        "request-promise": "^4.2.1"
-    }
+  "name": "html-css-class-completion",
+  "displayName": "IntelliSense for CSS class names",
+  "description": "Provides CSS class name completion for the HTML class attribute based on the CSS files in your workspace. Also supports React's className attribute.",
+  "version": "1.10.2",
+  "publisher": "Zignd",
+  "engines": {
+    "vscode": "^1.4.0"
+  },
+  "categories": [
+    "Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "html-css-class-completion.cache",
+        "title": "Cache CSS class definitions"
+      }
+    ]
+  },
+  "icon": "images/icon.png",
+  "repository": {
+    "url": "https://github.com/Zignd/HTML-CSS-Class-Completion"
+  },
+  "main": "./out/src/extension",
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.16",
+    "@types/css": "^0.0.30",
+    "@types/htmlparser2": "^3.7.29",
+    "@types/lodash": "^4.14.63",
+    "@types/node": "^7.0.18",
+    "@types/request": "^0.0.43",
+    "@types/request-promise": "^4.1.33",
+    "typescript": "^2.3.2",
+    "vscode": "^1.1.0"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "css": "^2.2.1",
+    "htmlparser2": "^3.9.2",
+    "lodash": "^4.17.4",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
+  }
 }

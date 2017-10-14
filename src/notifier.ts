@@ -11,7 +11,7 @@ class Notifier {
         this.statusBarItem.show();
     }
 
-    public notify(icon: string, text: string): void {
+    public notify(icon: string, text: string, autoHide: boolean = true): void {
         if (this._timeoutId) {
             clearTimeout(this._timeoutId);
         }
@@ -19,10 +19,12 @@ class Notifier {
         this.statusBarItem.text = `$(${icon}) ${text}`;
         this.statusBarItem.tooltip = null;
 
-        this._timeoutId = setTimeout(() => {
-            this.statusBarItem.text = `$(${icon})`;
-            this.statusBarItem.tooltip = text;
-        }, 5000);
+        if (autoHide) {
+            this._timeoutId = setTimeout(() => {
+                this.statusBarItem.text = `$(${icon})`;
+                this.statusBarItem.tooltip = text;
+            }, 5000);
+        }
     }
 }
 
