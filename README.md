@@ -26,11 +26,8 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 ## Contributions
 You can request new features and/or contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues). Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
 
-## What's new in version 1.11.0 (Out 14, 2017)
-* Fix error that occurs when you try to get completion and the extension is loading.
-* Add limitations to the concurrency in resource-intensive operations.
-* Add progress indicator, useful for large projects.
-* The `node_modules` will not be ignored. With those changes, it seems that there's no need to ignore it.
+## What's new in version 1.12.0 (Out 31, 2017)
+* Added the "multi-root ready" keyword, it was a request from the VS Code team.
 
 Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
 

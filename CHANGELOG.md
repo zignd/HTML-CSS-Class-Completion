@@ -1,3 +1,6 @@
+### 1.12.0 (Out 31, 2017)
+* Added the "multi-root ready" keyword, it was a request from the VS Code team.
+
 ### 1.11.0 (Out 14, 2017)
 * Fix error that occurs when you try to get completion and the extension is loading.
 * Add limitations to the concurrency in resource-intensive operations.
