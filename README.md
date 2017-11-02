@@ -32,7 +32,7 @@ You can request new features and/or contribute to the extension development on i
 Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
 
 ## Usage
-If there are HTML files on your workspace the extension automatically starts and look for CSS class definitions. In case new CSS classes are definined or new CSS files are added to the workspace and you also want auto completion for them simply hit the lightning icon you will find on the status bar and execute the command pressing `Ctrl+Shift+P` and then typing "Cache CSS class definitions".
+If there are HTML files on your workspace, the extension automatically starts and looks for CSS class definitions. In case new CSS classes are defined or new CSS files are added to the workspace and you also want auto completion for them, simply hit the lightning icon on the status bar and execute the command by pressing `Ctrl+Shift+P`(`cmd+Shift+P` for Mac) and then typing "Cache CSS class definitions".
 
 ![](https://i.imgur.com/O7NjEUW.gif)
 ![](https://i.imgur.com/uyiXqMb.gif)
