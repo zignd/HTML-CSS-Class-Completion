@@ -129,6 +129,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         'html',
         'razor',
         'php',
+        'blade',
         'vue',
         'twig',
         'markdown',
