@@ -1,3 +1,6 @@
+### 1.13.0 (Nov 6, 2017)
+* Added support for Laravel (Blade).
+
 ### 1.12.0 (Out 31, 2017)
 * Added the "multi-root ready" keyword, it was a request from the VS Code team.
 
