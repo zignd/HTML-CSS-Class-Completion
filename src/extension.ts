@@ -132,6 +132,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
     });
 
+    // CSS based extensions
+    ['css', 'sass', 'scss'].forEach((extension) => {
+        // Support for Tailwind CSS
+        context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\w- ]*$)/), true);
+    });
+
     caching = true;
     try {
         await cache();
