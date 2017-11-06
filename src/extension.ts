@@ -122,30 +122,16 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         }
     }));
 
-    const htmlRegex = /class=["|']([\w- ]*$)/;
-    const jsxRegex = /className=["|']([\w- ]*$)/;
-
-    const extensions = [
-        'html',
-        'razor',
-        'php',
-        'blade',
-        'vue',
-        'twig',
-        'markdown',
-        'typescriptreact',
-        'javascript',
-        'javascriptreact',
-        'erb',
-        'handlebars',
-        'ejs'
-    ];
-    
-    extensions.forEach((extension) => {
-        context.subscriptions.push(
-            provideCompletionItemsGenerator(extension, htmlRegex)
-        );
+    // Javascript based extensions
+    ['typescriptreact', 'javascript', 'javascriptreact'].forEach((extension) => {
+        context.subscriptions.push(provideCompletionItemsGenerator(extension, /className=["|']([\w- ]*$)/));
     });
+
+    // HTML based extensions
+    ['html', 'razor', 'php', 'blade', 'vue', 'twig', 'markdown', 'erb', 'handlebars', 'ejs'].forEach((extension) => {
+        context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
+    });
+
 
     caching = true;
     try {
