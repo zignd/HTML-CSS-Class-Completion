@@ -122,34 +122,15 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         }
     }));
 
-    const htmlRegex = /class=["|']([\w- ]*$)/;
-    const jsxRegex = /className=["|']([\w- ]*$)/;
+    // Javascript based extensions
+    ['typescriptreact', 'javascript', 'javascriptreact'].forEach((extension) => {
+        context.subscriptions.push(provideCompletionItemsGenerator(extension, /className=["|']([\w- ]*$)/));
+    });
 
-    const html = provideCompletionItemsGenerator('html', htmlRegex);
-    const razor = provideCompletionItemsGenerator('razor', htmlRegex);
-    const php = provideCompletionItemsGenerator('php', htmlRegex);
-    const vue = provideCompletionItemsGenerator('vue', htmlRegex);
-    const twig = provideCompletionItemsGenerator('twig', htmlRegex);
-    const md = provideCompletionItemsGenerator('markdown', htmlRegex);
-    const tsReact = provideCompletionItemsGenerator('typescriptreact', jsxRegex);
-    const js = provideCompletionItemsGenerator('javascript', jsxRegex)
-    const jsReact = provideCompletionItemsGenerator('javascriptreact', jsxRegex);
-    const erb = provideCompletionItemsGenerator('erb', htmlRegex);
-    const hbs = provideCompletionItemsGenerator('handlebars', htmlRegex);
-    const ejs = provideCompletionItemsGenerator('ejs', htmlRegex);
-
-    context.subscriptions.push(html);
-    context.subscriptions.push(razor);
-    context.subscriptions.push(php);
-    context.subscriptions.push(vue);
-    context.subscriptions.push(twig);
-    context.subscriptions.push(md);
-    context.subscriptions.push(tsReact);
-    context.subscriptions.push(js);
-    context.subscriptions.push(jsReact);
-    context.subscriptions.push(erb);
-    context.subscriptions.push(hbs);
-    context.subscriptions.push(ejs);
+    // HTML based extensions
+    ['html', 'razor', 'php', 'blade', 'vue', 'twig', 'markdown', 'erb', 'handlebars', 'ejs'].forEach((extension) => {
+        context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
+    });
 
     caching = true;
     try {

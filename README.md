@@ -13,6 +13,7 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * HTML
 * Razor
 * PHP
+* Laravel (Blade)
 * JavaScript
 * JavaScript React (.jsx)
 * TypeScript React (.tsx)
