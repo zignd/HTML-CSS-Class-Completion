@@ -10,7 +10,7 @@ import ParseEngineGateway from './parse-engine-gateway';
 let notifier: Notifier = new Notifier('html-css-class-completion.cache');
 let uniqueDefinitions: CssClassDefinition[] = [];
 
-const completionTriggerChars = ['"', '\'', ' '];
+const completionTriggerChars = ['"', '\'', ' ', '.'];
 
 let caching: boolean = false;
 
@@ -135,7 +135,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     // CSS based extensions
     ['css', 'sass', 'scss'].forEach((extension) => {
         // Support for Tailwind CSS
-        context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\w- ]*$)/));
+        context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\.\w- ]*$)/, '.'));
     });
 
     caching = true;
