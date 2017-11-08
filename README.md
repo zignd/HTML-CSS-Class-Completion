@@ -24,6 +24,9 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * Handlebars
 * EJS (.ejs)
 
+## Library Specific Support
+* @apply in CSS, SASS and SCSS Files for [Tailwind CSS](https://tailwindcss.com)
+
 ## Contributions
 You can request new features and/or contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues). Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
 
