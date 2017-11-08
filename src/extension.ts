@@ -74,7 +74,7 @@ function cache(): Promise<void> {
     });
 }
 
-function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp) {
+function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp, classPrefix: string = '') {
     return vscode.languages.registerCompletionItemProvider(languageSelector, {
         provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
             const start: vscode.Position = new vscode.Position(position.line, 0);
@@ -92,7 +92,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
             // Creates a collection of CompletionItem based on the classes already cached
             let completionItems = uniqueDefinitions.map(definition => {
-                return new vscode.CompletionItem(definition.className, vscode.CompletionItemKind.Variable);
+                return new vscode.CompletionItem(`${classPrefix}${definition.className}`, vscode.CompletionItemKind.Variable);
             });
 
             // Removes from the collection the classes already specified on the class attribute
