@@ -98,7 +98,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
             // Removes from the collection the classes already specified on the class attribute
             for (let i = 0; i < classesOnAttribute.length; i++) {
                 for (let j = 0; j < completionItems.length; j++) {
-                    if (completionItems[j].label === classesOnAttribute[i]) {
+                    if (completionItems[j].insertText === classesOnAttribute[i]) {
                         completionItems.splice(j, 1);
                     }
                 }
