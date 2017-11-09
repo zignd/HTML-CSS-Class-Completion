@@ -92,7 +92,13 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
             // Creates a collection of CompletionItem based on the classes already cached
             let completionItems = uniqueDefinitions.map(definition => {
-                return new vscode.CompletionItem(`${classPrefix}${definition.className}`, vscode.CompletionItemKind.Variable);
+                const completionItem = new vscode.CompletionItem(definition.className, vscode.CompletionItemKind.Variable);
+                const completionClassName = `${classPrefix}${definition.className}`;
+
+                completionItem.filterText = completionClassName;
+                completionItem.insertText = completionClassName;
+
+                return completionItem;
             });
 
             // Removes from the collection the classes already specified on the class attribute
