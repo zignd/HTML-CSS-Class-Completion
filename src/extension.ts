@@ -10,7 +10,7 @@ import ParseEngineGateway from './parse-engine-gateway';
 let notifier: Notifier = new Notifier('html-css-class-completion.cache');
 let uniqueDefinitions: CssClassDefinition[] = [];
 
-const completionTriggerChars = ['"', '\'', ' '];
+const completionTriggerChars = ['"', '\'', ' ', '.'];
 
 let caching: boolean = false;
 
@@ -74,7 +74,7 @@ function cache(): Promise<void> {
     });
 }
 
-function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp) {
+function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp, classPrefix: string = '') {
     return vscode.languages.registerCompletionItemProvider(languageSelector, {
         provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
             const start: vscode.Position = new vscode.Position(position.line, 0);
@@ -92,13 +92,19 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
             // Creates a collection of CompletionItem based on the classes already cached
             let completionItems = uniqueDefinitions.map(definition => {
-                return new vscode.CompletionItem(definition.className, vscode.CompletionItemKind.Variable);
+                const completionItem = new vscode.CompletionItem(definition.className, vscode.CompletionItemKind.Variable);
+                const completionClassName = `${classPrefix}${definition.className}`;
+
+                completionItem.filterText = completionClassName;
+                completionItem.insertText = completionClassName;
+
+                return completionItem;
             });
 
             // Removes from the collection the classes already specified on the class attribute
             for (let i = 0; i < classesOnAttribute.length; i++) {
                 for (let j = 0; j < completionItems.length; j++) {
-                    if (completionItems[j].label === classesOnAttribute[i]) {
+                    if (completionItems[j].insertText === classesOnAttribute[i]) {
                         completionItems.splice(j, 1);
                     }
                 }
@@ -135,7 +141,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     // CSS based extensions
     ['css', 'sass', 'scss'].forEach((extension) => {
         // Support for Tailwind CSS
-        context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\w- ]*$)/));
+        context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\.\w- ]*$)/, '.'));
     });
 
     caching = true;
