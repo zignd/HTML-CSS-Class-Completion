@@ -30,8 +30,8 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 ## Contributions
 You can request new features and/or contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues). Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
 
-## What's new in version 1.13.0 (Nov 6, 2017)
-* Added support for Laravel (Blade).
+## What's new in version 1.14.0 (Nov 10, 2017)
+* Added support for Tailwind CSS's @apply function in CSS, SASS and SCSS.
 
 Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
 

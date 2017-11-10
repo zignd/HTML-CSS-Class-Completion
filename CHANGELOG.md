@@ -1,3 +1,6 @@
+### 1.14.0 (Nov 10, 2017)
+* Added support for Tailwind CSS's @apply function in CSS, SASS and SCSS.
+
 ### 1.13.0 (Nov 6, 2017)
 * Added support for Laravel (Blade).
 
