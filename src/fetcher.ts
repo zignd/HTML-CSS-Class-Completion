@@ -5,7 +5,10 @@ class Fetcher {
     static async findAllParseableDocuments(): Promise<vscode.Uri[]> {
         const languages = ParseEngineRegistry.supportedLanguagesIds.join(',');
 
-        return await vscode.workspace.findFiles(`**/*.{${languages}}`, '');
+        const includeGlobPattern = vscode.workspace.getConfiguration().get('css-class-completion.includeGlobPattern');
+        const excludeGlobPattern = vscode.workspace.getConfiguration().get('css-class-completion.excludeGlobPattern');
+
+        return await vscode.workspace.findFiles(`${includeGlobPattern}.{${languages}}`, `${excludeGlobPattern}`);
     }
 }
 

@@ -27,6 +27,23 @@
         "command": "html-css-class-completion.cache",
         "title": "Cache CSS class definitions"
       }
+    ],
+    "configuration": [
+      {
+        "title": "CSS Class Completion",
+        "properties": {
+          "css-class-completion.includeGlobPattern": {
+            "type": "string",
+            "default": "**/*",
+            "description": "A glob pattern that defines the folders to search for. The glob pattern will be matched against the paths of resulting matches relative to their workspace."
+          },
+          "css-class-completion.excludeGlobPattern": {
+            "type": "string",
+            "default": "node_modules∕*",
+            "description": "A glob pattern that defines files and folders to exclude. The glob pattern will be matched against the file paths of resulting matches relative to their workspace."
+          }
+        }
+      }
     ]
   },
   "icon": "images/icon.png",
