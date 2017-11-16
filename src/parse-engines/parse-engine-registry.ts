@@ -1,12 +1,14 @@
 import ParseEngine from './common/parse-engine';
 import CssParseEngine from './types/css-parse-engine';
 import HtmlParseEngine from './types/html-parse-engine';
+import JsParseEngine from './types/js-parse-engine';
 
 class ParseEngineRegistry {
     private static _supportedLanguagesIds: string[];
     private static _registry: ParseEngine[] = [
         new CssParseEngine(),
-        new HtmlParseEngine()
+        new HtmlParseEngine(),
+        new JsParseEngine()
     ];
 
     public static get supportedLanguagesIds(): string[] {
