@@ -1,3 +1,6 @@
+### 1.15.0 (Dec 27, 2017)
+* Added User Settings to consider or exclude folders and files from the caching process.
+
 ### 1.14.0 (Nov 10, 2017)
 * Added support for Tailwind CSS's @apply function in CSS, SASS and SCSS.
 
