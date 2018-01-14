@@ -1,11 +1,12 @@
 import * as Bluebird from 'bluebird';
 import * as _ from 'lodash';
-import * as vscode from 'vscode';
 import CssClassDefinition from './common/css-class-definition';
 import CssClassesStorage from './css-classes-storage';
 import Fetcher from './fetcher';
 import Notifier from './notifier';
 import ParseEngineGateway from './parse-engine-gateway';
+import { Disposable, window, Uri, languages, TextDocument, Position, CompletionItem, Range, CompletionItemKind, ExtensionContext, workspace, commands } from 'vscode';
+import * as verror from 'verror';
 
 let notifier: Notifier = new Notifier('html-css-class-completion.cache');
 let uniqueDefinitions: CssClassDefinition[] = [];
@@ -20,7 +21,7 @@ function cache(): Promise<void> {
             notifier.notify('eye', 'Looking for CSS classes in the workspace...');
 
             console.log('Looking for parseable documents...');
-            let uris: vscode.Uri[] = await Fetcher.findAllParseableDocuments();
+            let uris: Uri[] = await Fetcher.findAllParseableDocuments();
 
             if (!uris) {
                 console.log("Found no documents");
@@ -75,10 +76,10 @@ function cache(): Promise<void> {
 }
 
 function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp, classPrefix: string = '') {
-    return vscode.languages.registerCompletionItemProvider(languageSelector, {
-        provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
-            const start: vscode.Position = new vscode.Position(position.line, 0);
-            const range: vscode.Range = new vscode.Range(start, position);
+    return languages.registerCompletionItemProvider(languageSelector, {
+        provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
+            const start: Position = new Position(position.line, 0);
+            const range: Range = new Range(start, position);
             const text: string = document.getText(range);
 
             // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
@@ -92,7 +93,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
             // Creates a collection of CompletionItem based on the classes already cached
             let completionItems = uniqueDefinitions.map(definition => {
-                const completionItem = new vscode.CompletionItem(definition.className, vscode.CompletionItemKind.Variable);
+                const completionItem = new CompletionItem(definition.className, CompletionItemKind.Variable);
                 const completionClassName = `${classPrefix}${definition.className}`;
 
                 completionItem.filterText = completionClassName;
@@ -115,14 +116,34 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
     }, ...completionTriggerChars);
 }
 
-export async function activate(context: vscode.ExtensionContext): Promise<void> {
-    context.subscriptions.push(vscode.commands.registerCommand('html-css-class-completion.cache', async () => {
+export async function activate(context: ExtensionContext): Promise<void> {
+    let disposables: Disposable[] = [];
+    workspace.onDidChangeConfiguration(async (e) => {
+        if (!e.affectsConfiguration('html-css-class-completion.includeGlobPattern') &&
+            !e.affectsConfiguration('html-css-class-completion.excludeGlobPattern'))
+            return;
+
+        try {
+            await cache();
+        } catch (err) {
+            err = new verror.VError(err, 'Failed to automatically re-cache the CSS classes in the workspace');
+            console.error(err);
+            window.showErrorMessage(err.message);
+        }
+    }, null, disposables);
+    context.subscriptions.push(...disposables);
+
+    context.subscriptions.push(commands.registerCommand('html-css-class-completion.cache', async () => {
         if (caching)
             return;
 
         caching = true;
         try {
             await cache();
+        } catch (err) {
+            err = new verror.VError(err, 'Failed to cache the CSS classes in the workspace');
+            console.error(err);
+            window.showErrorMessage(err.message);
         } finally {
             caching = false;
         }
@@ -147,6 +168,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     caching = true;
     try {
         await cache();
+    } catch (err) {
+        err = new verror.VError(err, 'Failed to cache the CSS classes in the workspace for the first time');
+        console.error(err);
+        window.showErrorMessage(err.message);
     } finally {
         caching = false;
     }

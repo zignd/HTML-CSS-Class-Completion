@@ -1,3 +1,6 @@
+### 1.16.0 (Jan 14, 2018)
+* Automatic re-caching when the extension's User Settings change.
+
 ### 1.15.0 (Dec 27, 2017)
 * Added User Settings to consider or exclude folders and files from the caching process.
 

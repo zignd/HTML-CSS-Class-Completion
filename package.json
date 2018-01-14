@@ -1,11 +1,11 @@
 {
   "name": "html-css-class-completion",
   "displayName": "IntelliSense for CSS class names",
-  "description": "Provides CSS class name completion for the HTML class attribute based on the CSS files in your workspace. Also supports React's className attribute.",
-  "version": "1.15.0",
+  "description": "CSS class name completion for the HTML class attribute based on the definitions found in your workspace.",
+  "version": "1.16.0",
   "publisher": "Zignd",
   "engines": {
-    "vscode": "^1.4.0"
+    "vscode": "^1.19.0"
   },
   "keywords": [
     "html",
@@ -57,24 +57,24 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.16",
-    "@types/css": "^0.0.30",
-    "@types/htmlparser2": "^3.7.29",
-    "@types/lodash": "^4.14.63",
-    "@types/mocha": "^2.2.43",
-    "@types/node": "^7.0.18",
-    "@types/request": "^0.0.43",
-    "@types/request-promise": "^4.1.33",
-    "mocha": "^4.0.1",
-    "typescript": "^2.3.2",
-    "vscode": "^1.1.0"
-  },
-  "dependencies": {
+    "@types/bluebird": "^3.5.19",
+    "@types/css": "^0.0.31",
+    "@types/htmlparser2": "^3.7.31",
+    "@types/lodash": "^4.14.92",
+    "@types/mocha": "^2.2.46",
+    "@types/node": "^7.0.51",
+    "@types/request": "^2.0.9",
+    "@types/request-promise": "^4.1.39",
+    "@types/verror": "^1.10.3",
     "bluebird": "^3.5.1",
     "css": "^2.2.1",
     "htmlparser2": "^3.9.2",
     "lodash": "^4.17.4",
+    "mocha": "^4.0.1",
     "request": "^2.81.0",
-    "request-promise": "^4.2.1"
+    "request-promise": "^4.2.1",
+    "typescript": "^2.6.2",
+    "verror": "^1.10.0",
+    "vscode": "^1.1.6"
   }
 }
