@@ -2,7 +2,7 @@
   "name": "html-css-class-completion",
   "displayName": "IntelliSense for CSS class names",
   "description": "CSS class name completion for the HTML class attribute based on the definitions found in your workspace.",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "publisher": "Zignd",
   "engines": {
     "vscode": "^1.19.0"
@@ -62,10 +62,12 @@
     "@types/htmlparser2": "^3.7.31",
     "@types/lodash": "^4.14.92",
     "@types/mocha": "^2.2.46",
-    "@types/node": "^7.0.51",
-    "@types/request": "^2.0.9",
+    "@types/node": "^7.0.52",
+    "@types/request": "^2.0.11",
     "@types/request-promise": "^4.1.39",
-    "@types/verror": "^1.10.3",
+    "@types/verror": "^1.10.3"
+  },
+  "dependencies": {
     "bluebird": "^3.5.1",
     "css": "^2.2.1",
     "htmlparser2": "^3.9.2",

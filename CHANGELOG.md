@@ -1,3 +1,6 @@
+### 1.16.1 (Jan 15, 2018)
+* Fix mistake in production build
+
 ### 1.16.0 (Jan 14, 2018)
 * Automatic re-caching when the extension's User Settings change.
 

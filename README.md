@@ -31,8 +31,9 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 ## Contributions
 You can request new features and contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues). Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
 
-## What's new in version 1.16.0 (Jan 14, 2018)
+## What's new in version 1.16.1 (Jan 15, 2018)
 * Automatic re-caching when the extension's User Settings change.
+* Fix mistake in production build
 
 Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
 
