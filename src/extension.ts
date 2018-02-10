@@ -15,64 +15,58 @@ const completionTriggerChars = ['"', '\'', ' ', '.'];
 
 let caching: boolean = false;
 
-function cache(): Promise<void> {
-    return new Promise<void>(async (resolve, reject): Promise<void> => {
-        try {
-            notifier.notify('eye', 'Looking for CSS classes in the workspace...');
+async function cache(): Promise<void> {
+    try {
+        notifier.notify('eye', 'Looking for CSS classes in the workspace...');
 
-            console.log('Looking for parseable documents...');
-            let uris: Uri[] = await Fetcher.findAllParseableDocuments();
+        console.log('Looking for parseable documents...');
+        let uris: Uri[] = await Fetcher.findAllParseableDocuments();
 
-            if (!uris) {
-                console.log("Found no documents");
-                notifier.statusBarItem.hide();
-                return;
-            }
-
-            console.log('Found all parseable documents.');
-            let definitions: CssClassDefinition[] = [];
-
-            let filesParsed: number = 0;
-            let failedLogs: string = '';
-            let failedLogsCount: number = 0;
-
-            console.log('Parsing documents and looking for CSS class definitions...');
-
-            try {
-                await Bluebird.map(uris, async (uri) => {
-                    try {
-                        Array.prototype.push.apply(definitions, await ParseEngineGateway.callParser(uri));
-                    } catch (error) {
-                        failedLogs += `${uri.path}\n`;
-                        failedLogsCount++;
-                    }
-                    filesParsed++;
-                    notifier.notify('eye', 'Looking for CSS classes in the workspace... (' + ((filesParsed / uris.length) * 100).toFixed(2) + '%)', false);
-                }, { concurrency: 30 });
-            } catch (err) {
-                console.error('Failed to parse the documents: ', err);
-                notifier.notify('alert', 'Failed to cache the CSS classes in the workspace (click for another attempt)');
-                return reject(err);
-            }
-
-            uniqueDefinitions = _.uniqBy(definitions, def => def.className);
-
-            console.log('Summary:');
-            console.log(uris.length, 'parseable documents found');
-            console.log(definitions.length, 'CSS class definitions found');
-            console.log(uniqueDefinitions.length, 'unique CSS class definitions found');
-            console.log(failedLogsCount, 'failed attempts to parse. List of the documents:');
-            console.log(failedLogs);
-
-            notifier.notify('zap', 'CSS classes cached (click to cache again)');
-
-            return resolve();
-        } catch (error) {
-            console.error('Failed to cache the class definitions during the iterations over the documents that were found:', error);
-            notifier.notify('alert', 'Failed to cache the CSS classes in the workspace (click for another attempt)');
-            return reject(error);
+        if (!uris || uris.length === 0) {
+            console.log("Found no documents");
+            notifier.statusBarItem.hide();
+            return;
         }
-    });
+
+        console.log('Found all parseable documents.');
+        let definitions: CssClassDefinition[] = [];
+
+        let filesParsed: number = 0;
+        let failedLogs: string = '';
+        let failedLogsCount: number = 0;
+
+        console.log('Parsing documents and looking for CSS class definitions...');
+
+        try {
+            await Bluebird.map(uris, async (uri) => {
+                try {
+                    Array.prototype.push.apply(definitions, await ParseEngineGateway.callParser(uri));
+                } catch (error) {
+                    failedLogs += `${uri.path}\n`;
+                    failedLogsCount++;
+                }
+                filesParsed++;
+                notifier.notify('eye', 'Looking for CSS classes in the workspace... (' + ((filesParsed / uris.length) * 100).toFixed(2) + '%)', false);
+            }, { concurrency: 30 });
+        } catch (err) {
+            notifier.notify('alert', 'Failed to cache the CSS classes in the workspace (click for another attempt)');
+            throw new verror.VError(err, 'Failed to parse the documents');
+        }
+
+        uniqueDefinitions = _.uniqBy(definitions, def => def.className);
+
+        console.log('Summary:');
+        console.log(uris.length, 'parseable documents found');
+        console.log(definitions.length, 'CSS class definitions found');
+        console.log(uniqueDefinitions.length, 'unique CSS class definitions found');
+        console.log(failedLogsCount, 'failed attempts to parse. List of the documents:');
+        console.log(failedLogs);
+
+        notifier.notify('zap', 'CSS classes cached (click to cache again)');
+    } catch (err) {
+        notifier.notify('alert', 'Failed to cache the CSS classes in the workspace (click for another attempt)');
+        throw new verror.VError(err, 'Failed to cache the class definitions during the iterations over the documents that were founds');
+    }
 }
 
 function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp, classPrefix: string = '') {
