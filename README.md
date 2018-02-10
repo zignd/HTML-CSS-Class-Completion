@@ -31,11 +31,12 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 ## Contributions
 You can request new features and contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues). Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
 
-## What's new in version 1.16.1 (Jan 15, 2018)
+## What's new in version 1.16.2 (Fev 1015, 2018)
 * Automatic re-caching when the extension's User Settings change.
-* Fix mistake in production build
+* Fix mistake in production build.
+* Workaround for a bug in the VS Code API.
 
-Check out the [change log](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
+Check out the [changelog](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
 
 ## Usage
 If there are HTML or JS files on your workspace, the extension automatically starts and looks for CSS class definitions. In case new CSS classes are defined, or new CSS files are added to the workspace, and you also want auto-completion for them, just hit the lightning icon on the status bar. Also, you can execute the command by pressing `Ctrl+Shift+P`(`Cmd+Shift+P` for Mac) and then typing "Cache CSS class definitions."

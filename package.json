@@ -2,7 +2,7 @@
   "name": "html-css-class-completion",
   "displayName": "IntelliSense for CSS class names",
   "description": "CSS class name completion for the HTML class attribute based on the definitions found in your workspace.",
-  "version": "1.16.1",
+  "version": "1.16.2",
   "publisher": "Zignd",
   "engines": {
     "vscode": "^1.19.0"

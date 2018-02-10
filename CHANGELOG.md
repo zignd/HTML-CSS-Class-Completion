@@ -1,5 +1,8 @@
+### 1.16.2 (Fev 10, 2018)
+* Workaround for a bug in the VS Code API.
+
 ### 1.16.1 (Jan 15, 2018)
-* Fix mistake in production build
+* Fix mistake in production build.
 
 ### 1.16.0 (Jan 14, 2018)
 * Automatic re-caching when the extension's User Settings change.
