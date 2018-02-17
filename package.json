@@ -7,6 +7,7 @@
   "engines": {
     "vscode": "^1.19.0"
   },
+  "enableProposedApi": true,
   "keywords": [
     "html",
     "css",
@@ -65,7 +66,8 @@
     "@types/node": "^7.0.52",
     "@types/request": "^2.0.11",
     "@types/request-promise": "^4.1.39",
-    "@types/verror": "^1.10.3"
+    "@types/verror": "^1.10.3",
+    "tslint": "^5.9.1"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
@@ -75,6 +77,7 @@
     "mocha": "^4.0.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
+    "source-map-support": "^0.5.3",
     "typescript": "^2.6.2",
     "verror": "^1.10.0",
     "vscode": "^1.1.6"

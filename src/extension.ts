@@ -1,26 +1,31 @@
-import * as Bluebird from 'bluebird';
-import * as _ from 'lodash';
-import CssClassDefinition from './common/css-class-definition';
-import CssClassesStorage from './css-classes-storage';
-import Fetcher from './fetcher';
-import Notifier from './notifier';
-import ParseEngineGateway from './parse-engine-gateway';
-import { Disposable, window, Uri, languages, TextDocument, Position, CompletionItem, Range, CompletionItemKind, ExtensionContext, workspace, commands } from 'vscode';
-import * as verror from 'verror';
+import * as Bluebird from "bluebird";
+import * as _ from "lodash";
+import "source-map-support/register";
+import * as verror from "verror";
+import {
+    commands, CompletionItem, CompletionItemKind, Disposable,
+    ExtensionContext, languages, Position, Range, TextDocument, Uri, window,
+    workspace,
+} from "vscode";
+import CssClassDefinition from "./common/css-class-definition";
+import CssClassesStorage from "./css-classes-storage";
+import Fetcher from "./fetcher";
+import Notifier from "./notifier";
+import ParseEngineGateway from "./parse-engine-gateway";
 
-let notifier: Notifier = new Notifier('html-css-class-completion.cache');
+const notifier: Notifier = new Notifier("html-css-class-completion.cache");
 let uniqueDefinitions: CssClassDefinition[] = [];
 
-const completionTriggerChars = ['"', '\'', ' ', '.'];
+const completionTriggerChars = ['"', "'", " ", "."];
 
 let caching: boolean = false;
 
 async function cache(): Promise<void> {
     try {
-        notifier.notify('eye', 'Looking for CSS classes in the workspace...');
+        notifier.notify("eye", "Looking for CSS classes in the workspace...");
 
-        console.log('Looking for parseable documents...');
-        let uris: Uri[] = await Fetcher.findAllParseableDocuments();
+        console.log("Looking for parseable documents...");
+        const uris: Uri[] = await Fetcher.findAllParseableDocuments();
 
         if (!uris || uris.length === 0) {
             console.log("Found no documents");
@@ -28,14 +33,14 @@ async function cache(): Promise<void> {
             return;
         }
 
-        console.log('Found all parseable documents.');
-        let definitions: CssClassDefinition[] = [];
+        console.log("Found all parseable documents.");
+        const definitions: CssClassDefinition[] = [];
 
         let filesParsed: number = 0;
-        let failedLogs: string = '';
+        let failedLogs: string = "";
         let failedLogsCount: number = 0;
 
-        console.log('Parsing documents and looking for CSS class definitions...');
+        console.log("Parsing documents and looking for CSS class definitions...");
 
         try {
             await Bluebird.map(uris, async (uri) => {
@@ -46,30 +51,32 @@ async function cache(): Promise<void> {
                     failedLogsCount++;
                 }
                 filesParsed++;
-                notifier.notify('eye', 'Looking for CSS classes in the workspace... (' + ((filesParsed / uris.length) * 100).toFixed(2) + '%)', false);
+                const progress = ((filesParsed / uris.length) * 100).toFixed(2);
+                notifier.notify("eye", "Looking for CSS classes in the workspace... (" + progress + "%)", false);
             }, { concurrency: 30 });
         } catch (err) {
-            notifier.notify('alert', 'Failed to cache the CSS classes in the workspace (click for another attempt)');
-            throw new verror.VError(err, 'Failed to parse the documents');
+            notifier.notify("alert", "Failed to cache the CSS classes in the workspace (click for another attempt)");
+            throw new verror.VError(err, "Failed to parse the documents");
         }
 
-        uniqueDefinitions = _.uniqBy(definitions, def => def.className);
+        uniqueDefinitions = _.uniqBy(definitions, (def) => def.className);
 
-        console.log('Summary:');
-        console.log(uris.length, 'parseable documents found');
-        console.log(definitions.length, 'CSS class definitions found');
-        console.log(uniqueDefinitions.length, 'unique CSS class definitions found');
-        console.log(failedLogsCount, 'failed attempts to parse. List of the documents:');
+        console.log("Summary:");
+        console.log(uris.length, "parseable documents found");
+        console.log(definitions.length, "CSS class definitions found");
+        console.log(uniqueDefinitions.length, "unique CSS class definitions found");
+        console.log(failedLogsCount, "failed attempts to parse. List of the documents:");
         console.log(failedLogs);
 
-        notifier.notify('zap', 'CSS classes cached (click to cache again)');
+        notifier.notify("zap", "CSS classes cached (click to cache again)");
     } catch (err) {
-        notifier.notify('alert', 'Failed to cache the CSS classes in the workspace (click for another attempt)');
-        throw new verror.VError(err, 'Failed to cache the class definitions during the iterations over the documents that were founds');
+        notifier.notify("alert", "Failed to cache the CSS classes in the workspace (click for another attempt)");
+        throw new verror.VError(err,
+            "Failed to cache the class definitions during the iterations over the documents that were found");
     }
 }
 
-function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp, classPrefix: string = '') {
+function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp, classPrefix: string = "") {
     return languages.registerCompletionItemProvider(languageSelector, {
         provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
             const start: Position = new Position(position.line, 0);
@@ -83,10 +90,10 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
             }
 
             // Will store the classes found on the class attribute
-            let classesOnAttribute = rawClasses[1].split(' ');
+            const classesOnAttribute = rawClasses[1].split(" ");
 
             // Creates a collection of CompletionItem based on the classes already cached
-            let completionItems = uniqueDefinitions.map(definition => {
+            const completionItems = uniqueDefinitions.map((definition) => {
                 const completionItem = new CompletionItem(definition.className, CompletionItemKind.Variable);
                 const completionClassName = `${classPrefix}${definition.className}`;
 
@@ -97,45 +104,47 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
             });
 
             // Removes from the collection the classes already specified on the class attribute
-            for (let i = 0; i < classesOnAttribute.length; i++) {
+            for (const classOnAttribute of classesOnAttribute) {
                 for (let j = 0; j < completionItems.length; j++) {
-                    if (completionItems[j].insertText === classesOnAttribute[i]) {
+                    if (completionItems[j].insertText === classOnAttribute) {
                         completionItems.splice(j, 1);
                     }
                 }
             }
 
             return completionItems;
-        }
+        },
     }, ...completionTriggerChars);
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
-    let disposables: Disposable[] = [];
+    const disposables: Disposable[] = [];
     workspace.onDidChangeConfiguration(async (e) => {
-        if (!e.affectsConfiguration('html-css-class-completion.includeGlobPattern') &&
-            !e.affectsConfiguration('html-css-class-completion.excludeGlobPattern'))
+        if (!e.affectsConfiguration("html-css-class-completion.includeGlobPattern") &&
+            !e.affectsConfiguration("html-css-class-completion.excludeGlobPattern")) {
             return;
+        }
 
         try {
             await cache();
         } catch (err) {
-            err = new verror.VError(err, 'Failed to automatically re-cache the CSS classes in the workspace');
+            err = new verror.VError(err, "Failed to automatically re-cache the CSS classes in the workspace");
             console.error(err);
             window.showErrorMessage(err.message);
         }
     }, null, disposables);
     context.subscriptions.push(...disposables);
 
-    context.subscriptions.push(commands.registerCommand('html-css-class-completion.cache', async () => {
-        if (caching)
+    context.subscriptions.push(commands.registerCommand("html-css-class-completion.cache", async () => {
+        if (caching) {
             return;
+        }
 
         caching = true;
         try {
             await cache();
         } catch (err) {
-            err = new verror.VError(err, 'Failed to cache the CSS classes in the workspace');
+            err = new verror.VError(err, "Failed to cache the CSS classes in the workspace");
             console.error(err);
             window.showErrorMessage(err.message);
         } finally {
@@ -144,32 +153,29 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }));
 
     // Javascript based extensions
-    ['typescriptreact', 'javascript', 'javascriptreact'].forEach((extension) => {
+    ["typescriptreact", "javascript", "javascriptreact"].forEach((extension) => {
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /className=["|']([\w- ]*$)/));
     });
 
     // HTML based extensions
-    ['html', 'razor', 'php', 'blade', 'vue', 'twig', 'markdown', 'erb', 'handlebars', 'ejs'].forEach((extension) => {
+    ["html", "razor", "php", "blade", "vue", "twig", "markdown", "erb", "handlebars", "ejs"].forEach((extension) => {
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
     });
 
     // CSS based extensions
-    ['css', 'sass', 'scss'].forEach((extension) => {
+    ["css", "sass", "scss"].forEach((extension) => {
         // Support for Tailwind CSS
-        context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\.\w- ]*$)/, '.'));
+        context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\.\w- ]*$)/, "."));
     });
 
     caching = true;
     try {
         await cache();
     } catch (err) {
-        err = new verror.VError(err, 'Failed to cache the CSS classes in the workspace for the first time');
+        err = new verror.VError(err, "Failed to cache the CSS classes in the workspace for the first time");
         console.error(err);
         window.showErrorMessage(err.message);
     } finally {
         caching = false;
     }
-}
-
-export function deactivate(): void {
 }

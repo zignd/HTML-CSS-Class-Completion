@@ -1,10 +1,10 @@
-import CssClassDefinition from './../../common/css-class-definition';
-import SimpleTextDocument from './simple-textdocument';
+import CssClassDefinition from "./../../common/css-class-definition";
+import ISimpleTextDocument from "./simple-text-document";
 
-interface ParseEngine {
+interface IParseEngine {
     languageId: string;
     extension: string;
-    parse(textDocument: SimpleTextDocument): Promise<CssClassDefinition[]>;
+    parse(textDocument: ISimpleTextDocument): Promise<CssClassDefinition[]>;
 }
 
-export default ParseEngine;
+export default IParseEngine;

@@ -1,4 +1,4 @@
-import CssClassDefinition from './common/css-class-definition';
+import CssClassDefinition from "./common/css-class-definition";
 
 class CssClassesStorage {
     private classes: CssClassDefinition[] = [];
