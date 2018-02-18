@@ -1,7 +1,7 @@
 import * as Bluebird from "bluebird";
 import * as _ from "lodash";
 import "source-map-support/register";
-import * as verror from "verror";
+import * as VError from "verror";
 import {
     commands, CompletionItem, CompletionItemKind, Disposable,
     ExtensionContext, languages, Position, Range, TextDocument, Uri, window,
@@ -19,6 +19,8 @@ let uniqueDefinitions: CssClassDefinition[] = [];
 const completionTriggerChars = ['"', "'", " ", "."];
 
 let caching: boolean = false;
+
+const emmetDisposables: Array<{ dispose(): any }> = [];
 
 async function cache(): Promise<void> {
     try {
@@ -56,7 +58,7 @@ async function cache(): Promise<void> {
             }, { concurrency: 30 });
         } catch (err) {
             notifier.notify("alert", "Failed to cache the CSS classes in the workspace (click for another attempt)");
-            throw new verror.VError(err, "Failed to parse the documents");
+            throw new VError(err, "Failed to parse the documents");
         }
 
         uniqueDefinitions = _.uniqBy(definitions, (def) => def.className);
@@ -71,12 +73,13 @@ async function cache(): Promise<void> {
         notifier.notify("zap", "CSS classes cached (click to cache again)");
     } catch (err) {
         notifier.notify("alert", "Failed to cache the CSS classes in the workspace (click for another attempt)");
-        throw new verror.VError(err,
+        throw new VError(err,
             "Failed to cache the class definitions during the iterations over the documents that were found");
     }
 }
 
-function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp, classPrefix: string = "") {
+function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp,
+                                         classPrefix: string = "", splitChar: string = " ") {
     return languages.registerCompletionItemProvider(languageSelector, {
         provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
             const start: Position = new Position(position.line, 0);
@@ -90,7 +93,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
             }
 
             // Will store the classes found on the class attribute
-            const classesOnAttribute = rawClasses[1].split(" ");
+            const classesOnAttribute = rawClasses[1].split(splitChar);
 
             // Creates a collection of CompletionItem based on the classes already cached
             const completionItems = uniqueDefinitions.map((definition) => {
@@ -117,18 +120,37 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
     }, ...completionTriggerChars);
 }
 
+function enableEmmetSupport(disposables: Disposable[]) {
+    const emmetRegex = /(?=\.)([\w-\. ]*$)/;
+    const languageModes = ["html", "razor", "php", "blade", "vue", "twig", "markdown", "erb",
+        "handlebars", "ejs", "typescriptreact", "javascript", "javascriptreact"];
+    languageModes.forEach((language) => {
+        emmetDisposables.push(provideCompletionItemsGenerator(language, emmetRegex, "", "."));
+    });
+}
+
+function disableEmmetSupport(disposables: Disposable[]) {
+    for (const emmetDisposable of disposables) {
+        emmetDisposable.dispose();
+    }
+}
+
 export async function activate(context: ExtensionContext): Promise<void> {
     const disposables: Disposable[] = [];
     workspace.onDidChangeConfiguration(async (e) => {
-        if (!e.affectsConfiguration("html-css-class-completion.includeGlobPattern") &&
-            !e.affectsConfiguration("html-css-class-completion.excludeGlobPattern")) {
-            return;
-        }
-
         try {
-            await cache();
+            if (e.affectsConfiguration("html-css-class-completion.includeGlobPattern") ||
+                e.affectsConfiguration("html-css-class-completion.excludeGlobPattern")) {
+                await cache();
+            }
+
+            if (e.affectsConfiguration("html-css-class-completion.enableEmmetSupport")) {
+                const isEnabled = workspace.getConfiguration()
+                    .get<boolean>("html-css-class-completion.enableEmmetSupport");
+                isEnabled ? enableEmmetSupport(emmetDisposables) :  disableEmmetSupport(emmetDisposables);
+            }
         } catch (err) {
-            err = new verror.VError(err, "Failed to automatically re-cache the CSS classes in the workspace");
+            err = new VError(err, "Failed to automatically reload the extension after the configuration change");
             console.error(err);
             window.showErrorMessage(err.message);
         }
@@ -144,7 +166,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         try {
             await cache();
         } catch (err) {
-            err = new verror.VError(err, "Failed to cache the CSS classes in the workspace");
+            err = new VError(err, "Failed to cache the CSS classes in the workspace");
             console.error(err);
             window.showErrorMessage(err.message);
         } finally {
@@ -173,10 +195,14 @@ export async function activate(context: ExtensionContext): Promise<void> {
     try {
         await cache();
     } catch (err) {
-        err = new verror.VError(err, "Failed to cache the CSS classes in the workspace for the first time");
+        err = new VError(err, "Failed to cache the CSS classes in the workspace for the first time");
         console.error(err);
         window.showErrorMessage(err.message);
     } finally {
         caching = false;
     }
+}
+
+export function deactivate(): void {
+    emmetDisposables.forEach((disposable) => disposable.dispose());
 }

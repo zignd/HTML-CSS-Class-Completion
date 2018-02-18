@@ -1,3 +1,7 @@
+### 1.17.1 (Fev 18, 2018)
+* Added support for "class" in TypeScript React, JavaScript and JavaScript React language modes. Previously only "className" was supported.
+* Added support for Emmet.
+
 ### 1.16.2 (Fev 10, 2018)
 * Workaround for a bug in the VS Code API.
 
