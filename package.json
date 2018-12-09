@@ -75,15 +75,15 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
-    "css": "^2.2.1",
+    "css": "^2.2.4",
     "htmlparser2": "^3.9.2",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.11",
     "mocha": "^4.0.1",
-    "request": "^2.81.0",
+    "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "source-map-support": "^0.5.3",
     "typescript": "^2.6.2",
     "verror": "^1.10.0",
-    "vscode": "^1.1.6"
+    "vscode": "^1.1.26"
   }
 }
