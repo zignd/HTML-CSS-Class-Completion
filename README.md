@@ -24,6 +24,7 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * Embedded Ruby (.html.erb) [requires [rebornix.Ruby](https://marketplace.visualstudio.com/items?itemName=rebornix.Ruby)]
 * Handlebars
 * EJS (.ejs)
+* Django Templates
 
 ## Specific Support
 * "@apply" directive in CSS, SASS and SCSS Files for [Tailwind CSS](https://tailwindcss.com)
