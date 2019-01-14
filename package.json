@@ -19,7 +19,8 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:html",
+		"onLanguage:css"
   ],
   "contributes": {
     "commands": [
