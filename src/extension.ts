@@ -122,7 +122,7 @@ function provideCompletionItemsGenerator(languageSelector: string, classMatchReg
 
 function enableEmmetSupport(disposables: Disposable[]) {
     const emmetRegex = /(?=\.)([\w-\. ]*$)/;
-    const languageModes = ["html", "razor", "php", "blade", "vue", "twig", "markdown", "erb",
+    const languageModes = ["html", "django-html", "razor", "php", "blade", "vue", "twig", "markdown", "erb",
         "handlebars", "ejs", "typescriptreact", "javascript", "javascriptreact"];
     languageModes.forEach((language) => {
         emmetDisposables.push(provideCompletionItemsGenerator(language, emmetRegex, "", "."));
@@ -181,7 +181,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     });
 
     // HTML based extensions
-    ["html", "razor", "php", "blade", "vue", "twig", "markdown", "erb", "handlebars", "ejs"].forEach((extension) => {
+    ["html", "django-html", "razor", "php", "blade", "vue", "twig", "markdown", "erb", "handlebars", "ejs"].forEach((extension) => {
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
     });
 
