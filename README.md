@@ -24,7 +24,7 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 * Embedded Ruby (.html.erb) [requires [rebornix.Ruby](https://marketplace.visualstudio.com/items?itemName=rebornix.Ruby)]
 * Handlebars
 * EJS (.ejs)
-* Django Templates
+* Django template (django-html)
 
 ## Specific Support
 * "@apply" directive in CSS, SASS and SCSS Files for [Tailwind CSS](https://tailwindcss.com)
@@ -34,9 +34,8 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 ## Contributions
 You can request new features and contribute to the extension development on its [repository on GitHub](https://github.com/Zignd/HTML-CSS-Class-Completion/issues). Look for an issue you're interested in working on, comment on it to let me know you're working on it and submit your pull request! :D
 
-## What's new in version 1.17.1 (February 18, 2018)
-* Added support for "class" in TypeScript React, JavaScript and JavaScript React language modes. Previously only "className" was supported.
-* Added support for Emmet.
+## What's new in version 1.18 (Jan 25, 2019)
+* Added support for Django template (django-html).
 
 Check out the [changelog](https://github.com/zignd/HTML-CSS-Class-Completion/blob/master/CHANGELOG.md) for the current and previous updates.
 

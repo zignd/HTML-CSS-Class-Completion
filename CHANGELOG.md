@@ -1,5 +1,8 @@
+### 1.18 (Jan 25, 2019)
+* Added support for Django template (django-html).
+
 ### 1.17.1 (Fev 18, 2018)
-* Added support for "class" in TypeScript React, JavaScript and JavaScript React language modes. Previously only "className" was supported.
+* Added support for "class" in TypeScript React, JavaScript and JavaScript React language modes. Previously only "className" was supported;
 * Added support for Emmet.
 
 ### 1.16.2 (Fev 10, 2018)
@@ -24,13 +27,13 @@
 * Added the "multi-root ready" keyword, it was a request from the VS Code team.
 
 ### 1.11.0 (Out 14, 2017)
-* Fix error that occurs when you try to get completion and the extension is loading.
-* Add limitations to the concurrency in resource-intensive operations.
-* Add progress indicator, useful for large projects.
+* Fix error that occurs when you try to get completion and the extension is loading;
+* Add limitations to the concurrency in resource-intensive operations;
+* Add progress indicator, useful for large projects;
 * The `node_modules` will not be ignored. With those changes, it seems that there's no need to ignore it.
 
 ### 1.10.2 (Out 12, 2017)
-* Temporary fix to prevent high CPU usage. The `node_modules` will be ignored in the search for CSS class definitions. [Link to the issue containing detailed information.](https://github.com/Microsoft/vscode/issues/35996)
+* Temporary fix to prevent high CPU usage. The `node_modules` will be ignored in the search for CSS class definitions. [Link to the issue containing detailed information.](https://github.com/Microsoft/vscode/issues/35996);
 * Fix possibility to run the caching process multiple times simultaneously.
 
 ### 1.10.1 (Out 12, 2017)
@@ -67,7 +70,7 @@
 * Rolling back a change that was causing node_modules to be ignored.
 
 ### 1.2.0 (Mai 9, 2017)
-* Now completion gets triggered when you open single quotes, double quotes or types a space character". Thanks to github.com/allevaton.
+* Now completion gets triggered when you open single quotes, double quotes or types a space character". Thanks to github.com/allevaton;
 * Internal refactors. Thanks to github.com/allevaton.
 
 ### 1.1.0 (Apr 14, 2017)
