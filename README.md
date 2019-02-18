@@ -12,7 +12,7 @@ A Visual Studio Code extension that provides CSS class name completion for the H
 
 ## Supported Language Modes
 * HTML
-* Razor
+* Razor [or aspnetcorerazor with [vscode.csharp](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)]
 * PHP
 * Laravel (Blade)
 * JavaScript
@@ -56,7 +56,7 @@ You can change the folders and files the extension will consider or exclude duri
 
 Emmet support comes disabled by default, the reason behind this choice is because it the current implementation simply triggers completion when you type a "." (period) and this behavior might be considered a little annoying, but it might change in the future.
 
-Currently it supports the following languages (those are [language identifier](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)): "html", "razor", "php", "blade", "vue", "twig", "markdown", "erb", "handlebars", "ejs", "typescriptreact", "javascript", "javascriptreact".
+Currently it supports the following languages (those are [language identifier](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)): "html", "razor", "aspnetcorerazor", "php", "blade", "vue", "twig", "markdown", "erb", "handlebars", "ejs", "typescriptreact", "javascript", "javascriptreact".
 
 * `"html-css-class-completion.enableEmmetSupport"` (default: `false`)
 
