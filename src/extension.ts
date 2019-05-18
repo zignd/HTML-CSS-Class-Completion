@@ -174,6 +174,11 @@ export async function activate(context: ExtensionContext): Promise<void> {
         }
     }));
 
+    // Enable Emmet Completion on startup if param is set to true
+    if (workspace.getConfiguration().get<boolean>("html-css-class-completion.enableEmmetSupport")) {
+        enableEmmetSupport(emmetDisposables);
+    }
+
     // Javascript based extensions
     ["typescriptreact", "javascript", "javascriptreact"].forEach((extension) => {
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /className=["|']([\w- ]*$)/));
