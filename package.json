@@ -2,7 +2,7 @@
   "name": "html-css-class-completion",
   "displayName": "IntelliSense for CSS class names in HTML",
   "description": "CSS class name completion for the HTML class attribute based on the definitions found in your workspace.",
-  "version": "1.18.0",
+  "version": "1.19.0",
   "publisher": "Zignd",
   "engines": {
     "vscode": "^1.19.0"
@@ -30,7 +30,7 @@
     ],
     "configuration": [
       {
-        "title": "CSS Class Completion",
+        "title": "IntelliSense for CSS class names in HTML",
         "properties": {
           "html-css-class-completion.includeGlobPattern": {
             "type": "string",
@@ -59,7 +59,9 @@
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "vsce:package": "vsce package",
+    "vsce:publish": "vsce publish"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.19",
@@ -71,19 +73,20 @@
     "@types/request": "^2.0.11",
     "@types/request-promise": "^4.1.39",
     "@types/verror": "^1.10.3",
-    "tslint": "^5.9.1"
+    "mocha": "^4.0.1",
+    "tslint": "^5.9.1",
+    "vsce": "^1.61.0",
+    "typescript": "^2.6.2",
+    "vscode": "^1.1.26"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
     "css": "^2.2.4",
     "htmlparser2": "^3.9.2",
     "lodash": "^4.17.11",
-    "mocha": "^4.0.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "source-map-support": "^0.5.3",
-    "typescript": "^2.6.2",
-    "verror": "^1.10.0",
-    "vscode": "^1.1.26"
+    "verror": "^1.10.0"
   }
 }
