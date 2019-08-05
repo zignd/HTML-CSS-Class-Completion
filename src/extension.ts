@@ -79,7 +79,7 @@ async function cache(): Promise<void> {
 }
 
 function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp,
-                                         classPrefix: string = "", splitChar: string = " ") {
+    classPrefix: string = "", splitChar: string = " ") {
     return languages.registerCompletionItemProvider(languageSelector, {
         provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
             const start: Position = new Position(position.line, 0);
@@ -147,7 +147,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
             if (e.affectsConfiguration("html-css-class-completion.enableEmmetSupport")) {
                 const isEnabled = workspace.getConfiguration()
                     .get<boolean>("html-css-class-completion.enableEmmetSupport");
-                isEnabled ? enableEmmetSupport(emmetDisposables) :  disableEmmetSupport(emmetDisposables);
+                isEnabled ? enableEmmetSupport(emmetDisposables) : disableEmmetSupport(emmetDisposables);
             }
         } catch (err) {
             err = new VError(err, "Failed to automatically reload the extension after the configuration change");
@@ -186,7 +186,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
     });
 
     // HTML based extensions
-    ["html", "django-html", "razor", "php", "blade", "vue", "twig", "markdown", "erb", "handlebars", "ejs"].forEach((extension) => {
+    ["html", "django-html", "razor", "php", "blade", "vue",
+        "twig", "markdown", "erb", "handlebars", "ejs",
+    ].forEach((extension) => {
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
     });
 
