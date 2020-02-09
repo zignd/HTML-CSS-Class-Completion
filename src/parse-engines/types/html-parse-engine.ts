@@ -20,13 +20,16 @@ class HtmlParseEngine implements IParseEngine {
         let linkHref: string;
 
         const parser = new html.Parser({
-            onattribute: (name: string, value: string) => {
-                if (name === "rel" && value === "stylesheet") {
-                    isRelStylesheet = true;
-                }
-
-                if (tag === "link" && name === "href" && value.indexOf("http") === 0) {
-                    linkHref = value;
+            onopentag: (name, attribs) => {
+                if (name === "link") {
+                    tag = "link";
+                    if ("rel" in attribs && attribs.rel === "stylesheet") {
+                        isRelStylesheet = true;
+                    }
+    
+                    if ("href" in attribs && attribs.href.trim().indexOf("http") === 0) {
+                        linkHref = attribs.href;
+                    }
                 }
             },
             onclosetag: () => {
@@ -36,9 +39,6 @@ class HtmlParseEngine implements IParseEngine {
 
                 isRelStylesheet = false;
                 linkHref = null;
-            },
-            onopentagname: (name: string) => {
-                tag = name;
             },
             ontext: (text: string) => {
                 if (tag === "style") {
