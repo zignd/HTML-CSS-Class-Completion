@@ -10,21 +10,29 @@ export default class CssClassExtractor {
 
         const definitions: CssClassDefinition[] = [];
 
-        // go through each of the rules...
-        ast.stylesheet.rules.forEach((rule: css.Rule) => {
+        // go through each of the selectors of the current rule
+        const addRule = (rule: css.Rule) => {
+            rule.selectors.forEach((selector: string) => {
+                let item: RegExpExecArray = classNameRegex.exec(selector);
+                while (item) {
+                    definitions.push(new CssClassDefinition(item[1]));
+                    item = classNameRegex.exec(selector);
+                }
+            });
+        };
+
+        // go through each of the rules or media query...
+        ast.stylesheet.rules.forEach((rule: css.Rule & css.Media) => {
             // ...of type rule
             if (rule.type === "rule") {
-                // go through each of the selectors of the current rule
-                rule.selectors.forEach((selector: string) => {
-                    let item: RegExpExecArray = classNameRegex.exec(selector);
-                    while (item) {
-                        definitions.push(new CssClassDefinition(item[1]));
-                        item = classNameRegex.exec(selector);
-                    }
-                });
+                addRule(rule);
+            }
+            // of type media queries
+            if (rule.type === "media") {
+                // go through rules inside media queries
+                rule.rules.forEach((rule: css.Rule) => addRule(rule));
             }
         });
-
         return definitions;
     }
 }
