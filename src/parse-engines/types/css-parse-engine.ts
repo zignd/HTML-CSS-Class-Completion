@@ -1,5 +1,4 @@
-import * as css from "css";
-import * as vscode from "vscode";
+import * as postcss from 'postcss';
 import CssClassDefinition from "../../common/css-class-definition";
 import CssClassExtractor from "../common/css-class-extractor";
 import IParseEngine from "../common/parse-engine";
@@ -11,9 +10,9 @@ class CssParseEngine implements IParseEngine {
 
     public async parse(textDocument: ISimpleTextDocument): Promise<CssClassDefinition[]> {
         const code: string = textDocument.getText();
-        const codeAst: css.Stylesheet = css.parse(code);
-
-        return CssClassExtractor.extract(codeAst);
+        const result = await postcss().process(code);
+        if (!result.root) return [];
+        return CssClassExtractor.extract(result.root);
     }
 }
 

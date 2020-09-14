@@ -1,8 +1,7 @@
 import * as Bluebird from "bluebird";
-import * as css from "css";
 import * as html from "htmlparser2";
+import * as postcss from 'postcss';
 import * as request from "request-promise";
-import * as vscode from "vscode";
 import CssClassDefinition from "../../common/css-class-definition";
 import CssClassExtractor from "../common/css-class-extractor";
 import IParseEngine from "../common/parse-engine";
@@ -42,7 +41,7 @@ class HtmlParseEngine implements IParseEngine {
             },
             ontext: (text: string) => {
                 if (tag === "style") {
-                    definitions.push(...CssClassExtractor.extract(css.parse(text)));
+                    definitions.push(...CssClassExtractor.extract(postcss().process(text).root));
                 }
             },
         });
@@ -52,7 +51,7 @@ class HtmlParseEngine implements IParseEngine {
 
         await Bluebird.map(urls, async (url) => {
             const content = await request.get(url);
-            definitions.push(...CssClassExtractor.extract(css.parse(content)));
+            definitions.push(...CssClassExtractor.extract(postcss().process(content).root));
         }, { concurrency: 10 });
 
         return definitions;
