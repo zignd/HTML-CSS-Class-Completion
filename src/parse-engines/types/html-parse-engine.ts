@@ -41,6 +41,7 @@ class HtmlParseEngine implements IParseEngine {
             },
             ontext: (text: string) => {
                 if (tag === "style") {
+                    // this should probably be async... not sure how to do that?
                     definitions.push(...CssClassExtractor.extract(postcss().process(text).root));
                 }
             },
@@ -51,7 +52,8 @@ class HtmlParseEngine implements IParseEngine {
 
         await Bluebird.map(urls, async (url) => {
             const content = await request.get(url);
-            definitions.push(...CssClassExtractor.extract(postcss().process(content).root));
+            const postcssResult = await postcss().process(content);
+            definitions.push(...CssClassExtractor.extract(postcssResult.root));
         }, { concurrency: 10 });
 
         return definitions;
