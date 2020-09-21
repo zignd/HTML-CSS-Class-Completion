@@ -81,9 +81,9 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
-    "css": "^2.2.4",
     "htmlparser2": "^3.9.2",
     "lodash": "^4.17.11",
+    "postcss": "^7.0.32",
     "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "source-map-support": "^0.5.3",
