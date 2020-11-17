@@ -56,6 +56,15 @@
               "javascriptreact"
             ]
           },
+          "html-css-class-completion.enabledCSSLanguages": {
+            "type": "array",
+            "description": "A list of CSS languages where suggestions are enabled.",
+            "default": [
+              "css",
+              "sass",
+              "scss"
+            ]
+          },
           "html-css-class-completion.enabledHTMLLanguages": {
             "type": "array",
             "description": "A list of HTML languages where suggestions are enabled.",

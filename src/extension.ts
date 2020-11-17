@@ -191,7 +191,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     });
 
     // CSS based extensions
-    ["css", "sass", "scss"].forEach((extension) => {
+    workspace.getConfiguration().get<string[]>("html-css-class-completion.enabledCSSLanguages").forEach((extension) => {
         // Support for Tailwind CSS
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\.\w- ]*$)/, "."));
     });
