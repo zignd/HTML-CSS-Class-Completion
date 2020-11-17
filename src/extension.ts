@@ -180,15 +180,14 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }
 
     // Javascript based extensions
-    ["typescriptreact", "javascript", "javascriptreact"].forEach((extension) => {
+    workspace.getConfiguration().get<string[]>("html-css-class-completion.enabledJavascriptLanguages").forEach((extension) => {
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /className=["|']([\w- ]*$)/));
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
     });
 
     // HTML based extensions
-    ["html", "django-html", "razor", "php", "blade", "vue",
-        "twig", "markdown", "erb", "handlebars", "ejs",
-    ].forEach((extension) => {
+    workspace.getConfiguration().get<string[]>("html-css-class-completion.enabledHTMLLanguages").forEach((extension) => {
+        console.log(extension)
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
     });
 
