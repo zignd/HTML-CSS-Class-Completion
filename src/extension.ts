@@ -187,7 +187,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
     // HTML based extensions
     workspace.getConfiguration().get<string[]>("html-css-class-completion.enabledHTMLLanguages").forEach((extension) => {
-        console.log(extension)
         context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
     });
 
