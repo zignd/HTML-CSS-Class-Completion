@@ -46,6 +46,42 @@
             "type": "boolean",
             "default": false,
             "description": "Enables completion when you're writing Emmet abbreviations."
+          },
+          "html-css-class-completion.enabledJavascriptLanguages": {
+            "type": "array",
+            "description": "A list of Javascript languages where suggestions are enabled.",
+            "default": [
+              "typescriptreact",
+              "javascript",
+              "javascriptreact"
+            ]
+          },
+          "html-css-class-completion.enabledCSSLanguages": {
+            "type": "array",
+            "description": "A list of CSS languages where suggestions are enabled.",
+            "default": [
+              "css",
+              "sass",
+              "scss"
+            ]
+          },
+          "html-css-class-completion.enabledHTMLLanguages": {
+            "type": "array",
+            "description": "A list of HTML languages where suggestions are enabled.",
+            "default": [
+              "html",
+              "django-html",
+              "razor",
+              "php",
+              "blade",
+              "vue",
+              "twig",
+              "markdown",
+              "erb",
+              "handlebars",
+              "ejs",
+              "svelte"
+            ]
           }
         }
       }
