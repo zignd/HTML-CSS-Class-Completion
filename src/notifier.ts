@@ -10,7 +10,7 @@ class Notifier {
         this.statusBarItem.show();
     }
 
-    public notify(icon: string, text: string, autoHide: boolean = true): void {
+    public notify(icon: string, text: string, autoHide = true): void {
         if (this.timeoutId) {
             clearTimeout(this.timeoutId);
         }

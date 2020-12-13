@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import ParseEngineRegistry from "./parse-engines/parse-engine-registry";
 
 class Fetcher {
     public static async findAllParseableDocuments(): Promise<vscode.Uri[]> {

@@ -2,21 +2,20 @@ import * as Bluebird from "bluebird";
 import * as css from "css";
 import * as html from "htmlparser2";
 import * as request from "request-promise";
-import * as vscode from "vscode";
 import CssClassDefinition from "../../common/css-class-definition";
 import CssClassExtractor from "../common/css-class-extractor";
 import IParseEngine from "../common/parse-engine";
 import ISimpleTextDocument from "../common/simple-text-document";
 
 class HtmlParseEngine implements IParseEngine {
-    public languageId: string = "html";
-    public extension: string = "html";
+    public languageId = "html";
+    public extension = "html";
 
     public async parse(textDocument: ISimpleTextDocument): Promise<CssClassDefinition[]> {
         const definitions: CssClassDefinition[] = [];
         const urls: string[] = [];
         let tag: string;
-        let isRelStylesheet: boolean = false;
+        let isRelStylesheet = false;
         let linkHref: string;
 
         const parser = new html.Parser({

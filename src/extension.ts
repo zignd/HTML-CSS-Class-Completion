@@ -8,7 +8,6 @@ import {
     workspace,
 } from "vscode";
 import CssClassDefinition from "./common/css-class-definition";
-import CssClassesStorage from "./css-classes-storage";
 import Fetcher from "./fetcher";
 import Notifier from "./notifier";
 import ParseEngineGateway from "./parse-engine-gateway";
@@ -18,7 +17,7 @@ let uniqueDefinitions: CssClassDefinition[] = [];
 
 const completionTriggerChars = ['"', "'", " ", "."];
 
-let caching: boolean = false;
+let caching = false;
 
 const emmetDisposables: Array<{ dispose(): any }> = [];
 
@@ -38,9 +37,9 @@ async function cache(): Promise<void> {
         console.log("Found all parseable documents.");
         const definitions: CssClassDefinition[] = [];
 
-        let filesParsed: number = 0;
-        let failedLogs: string = "";
-        let failedLogsCount: number = 0;
+        let filesParsed = 0;
+        let failedLogs = "";
+        let failedLogsCount = 0;
 
         console.log("Parsing documents and looking for CSS class definitions...");
 
@@ -150,9 +149,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
                 isEnabled ? enableEmmetSupport(emmetDisposables) : disableEmmetSupport(emmetDisposables);
             }
         } catch (err) {
-            err = new VError(err, "Failed to automatically reload the extension after the configuration change");
-            console.error(err);
-            window.showErrorMessage(err.message);
+            const newErr = new VError(err, "Failed to automatically reload the extension after the configuration change");
+            console.error(newErr);
+            window.showErrorMessage(newErr.message);
         }
     }, null, disposables);
     context.subscriptions.push(...disposables);
@@ -166,9 +165,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
         try {
             await cache();
         } catch (err) {
-            err = new VError(err, "Failed to cache the CSS classes in the workspace");
-            console.error(err);
-            window.showErrorMessage(err.message);
+            const newErr = new VError(err, "Failed to cache the CSS classes in the workspace");
+            console.error(newErr);
+            window.showErrorMessage(newErr.message);
         } finally {
             caching = false;
         }
@@ -200,9 +199,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
     try {
         await cache();
     } catch (err) {
-        err = new VError(err, "Failed to cache the CSS classes in the workspace for the first time");
-        console.error(err);
-        window.showErrorMessage(err.message);
+        const newErr = new VError(err, "Failed to cache the CSS classes in the workspace for the first time");
+        console.error(newErr);
+        window.showErrorMessage(newErr.message);
     } finally {
         caching = false;
     }
