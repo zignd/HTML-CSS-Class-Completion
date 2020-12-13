@@ -47,40 +47,40 @@
             "default": false,
             "description": "Enables completion when you're writing Emmet abbreviations."
           },
-          "html-css-class-completion.enabledJavascriptLanguages": {
+          "html-css-class-completion.HTMLLanguages": {
             "type": "array",
-            "description": "A list of Javascript languages where suggestions are enabled.",
+            "description": "A list of HTML based languages where suggestions are enabled.",
             "default": [
-              "typescriptreact",
-              "javascript",
-              "javascriptreact"
+              "html",
+              "vue",
+              "razor",
+              "blade",
+              "handlebars",
+              "twig",
+              "django-html",
+              "php",
+              "markdown",
+              "erb",
+              "ejs",
+              "svelte"
             ]
           },
-          "html-css-class-completion.enabledCSSLanguages": {
+          "html-css-class-completion.CSSLanguages": {
             "type": "array",
-            "description": "A list of CSS languages where suggestions are enabled.",
+            "description": "A list of CSS based languages where suggestions are enabled.",
             "default": [
               "css",
               "sass",
               "scss"
             ]
           },
-          "html-css-class-completion.enabledHTMLLanguages": {
+          "html-css-class-completion.JavaScriptLanguages": {
             "type": "array",
-            "description": "A list of HTML languages where suggestions are enabled.",
+            "description": "A list of JavaScript based languages where suggestions are enabled.",
             "default": [
-              "html",
-              "django-html",
-              "razor",
-              "php",
-              "blade",
-              "vue",
-              "twig",
-              "markdown",
-              "erb",
-              "handlebars",
-              "ejs",
-              "svelte"
+              "javascript",
+              "javascriptreact",
+              "typescriptreact"
             ]
           }
         }

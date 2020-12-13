@@ -12,14 +12,30 @@ import Fetcher from "./fetcher";
 import Notifier from "./notifier";
 import ParseEngineGateway from "./parse-engine-gateway";
 
-const notifier: Notifier = new Notifier("html-css-class-completion.cache");
+enum Command {
+    Cache = "html-css-class-completion.cache",
+}
+
+enum Configuration {
+    IncludeGlobPattern = "html-css-class-completion.includeGlobPattern",
+    ExcludeGlobPattern = "html-css-class-completion.excludeGlobPattern",
+    EnableEmmetSupport = "html-css-class-completion.enableEmmetSupport",
+    HTMLLanguages = "html-css-class-completion.HTMLLanguages",
+    CSSLanguages = "html-css-class-completion.CSSLanguages",
+    JavaScriptLanguages = "html-css-class-completion.JavaScriptLanguages",
+}
+
+const notifier: Notifier = new Notifier(Command.Cache);
 let uniqueDefinitions: CssClassDefinition[] = [];
 
 const completionTriggerChars = ['"', "'", " ", "."];
 
 let caching = false;
 
-const emmetDisposables: Array<{ dispose(): any }> = [];
+const htmlDisposables: Disposable[] = [];
+const cssDisposables: Disposable[] = [];
+const javaScriptDisposables: Disposable[] = [];
+const emmetDisposables: Disposable[] = [];
 
 async function cache(): Promise<void> {
     try {
@@ -77,76 +93,125 @@ async function cache(): Promise<void> {
     }
 }
 
-function provideCompletionItemsGenerator(languageSelector: string, classMatchRegex: RegExp,
-    classPrefix: string = "", splitChar: string = " ") {
-    return languages.registerCompletionItemProvider(languageSelector, {
-        provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
-            const start: Position = new Position(position.line, 0);
-            const range: Range = new Range(start, position);
-            const text: string = document.getText(range);
+const registerCompletionProvider = (
+    languageSelector: string,
+    classMatchRegex: RegExp,
+    classPrefix = "",
+    splitChar = " "
+) => languages.registerCompletionItemProvider(languageSelector, {
+    provideCompletionItems(document: TextDocument, position: Position): CompletionItem[] {
+        const start: Position = new Position(position.line, 0);
+        const range: Range = new Range(start, position);
+        const text: string = document.getText(range);
 
-            // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
-            const rawClasses: RegExpMatchArray = text.match(classMatchRegex);
-            if (!rawClasses || rawClasses.length === 1) {
-                return [];
-            }
+        // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
+        const rawClasses: RegExpMatchArray = text.match(classMatchRegex);
+        if (!rawClasses || rawClasses.length === 1) {
+            return [];
+        }
 
-            // Will store the classes found on the class attribute
-            const classesOnAttribute = rawClasses[1].split(splitChar);
+        // Will store the classes found on the class attribute
+        const classesOnAttribute = rawClasses[1].split(splitChar);
 
-            // Creates a collection of CompletionItem based on the classes already cached
-            const completionItems = uniqueDefinitions.map((definition) => {
-                const completionItem = new CompletionItem(definition.className, CompletionItemKind.Variable);
-                const completionClassName = `${classPrefix}${definition.className}`;
+        // Creates a collection of CompletionItem based on the classes already cached
+        const completionItems = uniqueDefinitions.map((definition) => {
+            const completionItem = new CompletionItem(definition.className, CompletionItemKind.Variable);
+            const completionClassName = `${classPrefix}${definition.className}`;
 
-                completionItem.filterText = completionClassName;
-                completionItem.insertText = completionClassName;
+            completionItem.filterText = completionClassName;
+            completionItem.insertText = completionClassName;
 
-                return completionItem;
-            });
+            return completionItem;
+        });
 
-            // Removes from the collection the classes already specified on the class attribute
-            for (const classOnAttribute of classesOnAttribute) {
-                for (let j = 0; j < completionItems.length; j++) {
-                    if (completionItems[j].insertText === classOnAttribute) {
-                        completionItems.splice(j, 1);
-                    }
+        // Removes from the collection the classes already specified on the class attribute
+        for (const classOnAttribute of classesOnAttribute) {
+            for (let j = 0; j < completionItems.length; j++) {
+                if (completionItems[j].insertText === classOnAttribute) {
+                    completionItems.splice(j, 1);
                 }
             }
+        }
 
-            return completionItems;
-        },
-    }, ...completionTriggerChars);
+        return completionItems;
+    },
+}, ...completionTriggerChars);
+
+const registerHTMLProviders = (disposables: Disposable[]) =>
+    workspace.getConfiguration()
+        .get<string[]>(Configuration.HTMLLanguages)
+        .forEach((extension) => {
+            disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
+        });
+
+const registerCSSProviders = (disposables: Disposable[]) =>
+    workspace.getConfiguration()
+        .get<string[]>(Configuration.CSSLanguages)
+        .forEach((extension) => {
+            // The @apply rule was a CSS proposal which has since been abandoned,
+            // check the proposal for more info: http://tabatkins.github.io/specs/css-apply-rule/
+            // Its support should probably be removed
+            disposables.push(registerCompletionProvider(extension, /@apply ([.\w- ]*$)/, "."));
+        });
+
+const registerJavaScriptProviders = (disposables: Disposable[]) =>
+    workspace.getConfiguration()
+        .get<string[]>(Configuration.JavaScriptLanguages)
+        .forEach((extension) => {
+            disposables.push(registerCompletionProvider(extension, /className=["|']([\w- ]*$)/));
+            disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
+        });
+
+function registerEmmetProviders(disposables: Disposable[]) {
+    const emmetRegex = /(?=\.)([\w-. ]*$)/;
+
+    const registerProviders = (modes: string[]) => {
+        modes.forEach((language) => {
+            disposables.push(registerCompletionProvider(language, emmetRegex, "", "."));
+        });
+    };
+
+    registerProviders(
+        workspace.getConfiguration().get<string[]>(Configuration.HTMLLanguages)
+    );
+    registerProviders(
+        workspace.getConfiguration().get<string[]>(Configuration.JavaScriptLanguages)
+    );
 }
 
-function enableEmmetSupport(disposables: Disposable[]) {
-    const emmetRegex = /(?=\.)([\w-\. ]*$)/;
-    const languageModes = ["html", "django-html", "razor", "php", "blade", "vue", "twig", "markdown", "erb",
-        "handlebars", "ejs", "typescriptreact", "javascript", "javascriptreact"];
-    languageModes.forEach((language) => {
-        emmetDisposables.push(provideCompletionItemsGenerator(language, emmetRegex, "", "."));
-    });
-}
-
-function disableEmmetSupport(disposables: Disposable[]) {
-    for (const emmetDisposable of disposables) {
-        emmetDisposable.dispose();
-    }
+function unregisterProviders(disposables: Disposable[]) {
+    disposables.forEach(disposable => disposable.dispose());
+    disposables.length = 0;
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
     const disposables: Disposable[] = [];
     workspace.onDidChangeConfiguration(async (e) => {
         try {
-            if (e.affectsConfiguration("html-css-class-completion.includeGlobPattern") ||
-                e.affectsConfiguration("html-css-class-completion.excludeGlobPattern")) {
+            if (e.affectsConfiguration(Configuration.IncludeGlobPattern) ||
+                e.affectsConfiguration(Configuration.ExcludeGlobPattern)) {
                 await cache();
             }
 
-            if (e.affectsConfiguration("html-css-class-completion.enableEmmetSupport")) {
+            if (e.affectsConfiguration(Configuration.EnableEmmetSupport)) {
                 const isEnabled = workspace.getConfiguration()
-                    .get<boolean>("html-css-class-completion.enableEmmetSupport");
-                isEnabled ? enableEmmetSupport(emmetDisposables) : disableEmmetSupport(emmetDisposables);
+                    .get<boolean>(Configuration.EnableEmmetSupport);
+                isEnabled ? registerEmmetProviders(emmetDisposables) : unregisterProviders(emmetDisposables);
+            }
+
+            if (e.affectsConfiguration(Configuration.HTMLLanguages)) {
+                unregisterProviders(htmlDisposables);
+                registerHTMLProviders(htmlDisposables);
+            }
+
+            if (e.affectsConfiguration(Configuration.CSSLanguages)) {
+                unregisterProviders(cssDisposables);
+                registerCSSProviders(cssDisposables);
+            }
+
+            if (e.affectsConfiguration(Configuration.JavaScriptLanguages)) {
+                unregisterProviders(javaScriptDisposables);
+                registerJavaScriptProviders(javaScriptDisposables);
             }
         } catch (err) {
             const newErr = new VError(err, "Failed to automatically reload the extension after the configuration change");
@@ -156,7 +221,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }, null, disposables);
     context.subscriptions.push(...disposables);
 
-    context.subscriptions.push(commands.registerCommand("html-css-class-completion.cache", async () => {
+    context.subscriptions.push(commands.registerCommand(Command.Cache, async () => {
         if (caching) {
             return;
         }
@@ -173,27 +238,13 @@ export async function activate(context: ExtensionContext): Promise<void> {
         }
     }));
 
-    // Enable Emmet Completion on startup if param is set to true
-    if (workspace.getConfiguration().get<boolean>("html-css-class-completion.enableEmmetSupport")) {
-        enableEmmetSupport(emmetDisposables);
+    if (workspace.getConfiguration().get<boolean>(Configuration.EnableEmmetSupport)) {
+        registerEmmetProviders(emmetDisposables);
     }
 
-    // Javascript based extensions
-    workspace.getConfiguration().get<string[]>("html-css-class-completion.enabledJavascriptLanguages").forEach((extension) => {
-        context.subscriptions.push(provideCompletionItemsGenerator(extension, /className=["|']([\w- ]*$)/));
-        context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
-    });
-
-    // HTML based extensions
-    workspace.getConfiguration().get<string[]>("html-css-class-completion.enabledHTMLLanguages").forEach((extension) => {
-        context.subscriptions.push(provideCompletionItemsGenerator(extension, /class=["|']([\w- ]*$)/));
-    });
-
-    // CSS based extensions
-    workspace.getConfiguration().get<string[]>("html-css-class-completion.enabledCSSLanguages").forEach((extension) => {
-        // Support for Tailwind CSS
-        context.subscriptions.push(provideCompletionItemsGenerator(extension, /@apply ([\.\w- ]*$)/, "."));
-    });
+    registerHTMLProviders(htmlDisposables);
+    registerCSSProviders(cssDisposables);
+    registerJavaScriptProviders(javaScriptDisposables);
 
     caching = true;
     try {
@@ -208,5 +259,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
 }
 
 export function deactivate(): void {
-    emmetDisposables.forEach((disposable) => disposable.dispose());
+    unregisterProviders(htmlDisposables);
+    unregisterProviders(cssDisposables);
+    unregisterProviders(javaScriptDisposables);
+    unregisterProviders(emmetDisposables);
 }
