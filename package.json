@@ -98,7 +98,9 @@
     "postinstall": "node ./node_modules/vscode/bin/install",
     "vscode:prepublish": "npm run compile",
     "vsce:package": "vsce package",
-    "vsce:publish": "vsce publish"
+    "vsce:publish": "vsce publish",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.19",
