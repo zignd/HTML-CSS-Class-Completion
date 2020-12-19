@@ -1,3 +1,10 @@
+### 1.20 (Dec 19, 2020)
+* Settings to allow users to specify which language modes will have autocompletion;
+* Fix interpretation of classes defined inside media queries.
+
+### 1.19 (May 18, 2019)
+* Fix Emmet completion which was not enabled at startup when the configuration was set.
+
 ### 1.18 (Jan 25, 2019)
 * Added support for Django template (django-html).
 
