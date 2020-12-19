@@ -105,7 +105,7 @@ const registerCompletionProvider = (
         const text: string = document.getText(range);
 
         // Check if the cursor is on a class attribute and retrieve all the css rules in this class attribute
-        const rawClasses: RegExpMatchArray = text.match(classMatchRegex);
+        const rawClasses: RegExpMatchArray | null = text.match(classMatchRegex);
         if (!rawClasses || rawClasses.length === 1) {
             return [];
         }
@@ -139,15 +139,15 @@ const registerCompletionProvider = (
 
 const registerHTMLProviders = (disposables: Disposable[]) =>
     workspace.getConfiguration()
-        .get<string[]>(Configuration.HTMLLanguages)
-        .forEach((extension) => {
+        ?.get<string[]>(Configuration.HTMLLanguages)
+        ?.forEach((extension) => {
             disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
         });
 
 const registerCSSProviders = (disposables: Disposable[]) =>
     workspace.getConfiguration()
         .get<string[]>(Configuration.CSSLanguages)
-        .forEach((extension) => {
+        ?.forEach((extension) => {
             // The @apply rule was a CSS proposal which has since been abandoned,
             // check the proposal for more info: http://tabatkins.github.io/specs/css-apply-rule/
             // Its support should probably be removed
@@ -157,7 +157,7 @@ const registerCSSProviders = (disposables: Disposable[]) =>
 const registerJavaScriptProviders = (disposables: Disposable[]) =>
     workspace.getConfiguration()
         .get<string[]>(Configuration.JavaScriptLanguages)
-        .forEach((extension) => {
+        ?.forEach((extension) => {
             disposables.push(registerCompletionProvider(extension, /className=["|']([\w- ]*$)/));
             disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
         });
@@ -171,12 +171,15 @@ function registerEmmetProviders(disposables: Disposable[]) {
         });
     };
 
-    registerProviders(
-        workspace.getConfiguration().get<string[]>(Configuration.HTMLLanguages)
-    );
-    registerProviders(
-        workspace.getConfiguration().get<string[]>(Configuration.JavaScriptLanguages)
-    );
+    const htmlLanguages = workspace.getConfiguration().get<string[]>(Configuration.HTMLLanguages);
+    if (htmlLanguages) {
+        registerProviders(htmlLanguages);
+    }
+
+    const javaScriptLanguages = workspace.getConfiguration().get<string[]>(Configuration.JavaScriptLanguages);
+    if (javaScriptLanguages) {
+        registerProviders(javaScriptLanguages);
+    }
 }
 
 function unregisterProviders(disposables: Disposable[]) {

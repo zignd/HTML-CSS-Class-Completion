@@ -16,7 +16,7 @@ class HtmlParseEngine implements IParseEngine {
         const urls: string[] = [];
         let tag: string;
         let isRelStylesheet = false;
-        let linkHref: string;
+        let linkHref: string | null;
 
         const parser = new html.Parser({
             onattribute: (name: string, value: string) => {

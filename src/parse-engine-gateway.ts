@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import VError = require("verror");
 import * as vscode from "vscode";
 
 import CssClassDefinition from "./common/css-class-definition";
@@ -20,7 +21,7 @@ async function readFile(file: string): Promise<string> {
 async function createSimpleTextDocument(uri: vscode.Uri): Promise<ISimpleTextDocument> {
     const text = await readFile(uri.fsPath);
     const simpleDocument: ISimpleTextDocument = {
-        languageId: uri.fsPath.split(".").pop(),
+        languageId: uri.fsPath.split(".").pop() || "",
         getText(): string {
             return text;
         },

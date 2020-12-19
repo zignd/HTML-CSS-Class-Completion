@@ -12,8 +12,8 @@ export default class CssClassExtractor {
 
         // go through each of the selectors of the current rule
         const addRule = (rule: css.Rule) => {
-            rule.selectors.forEach((selector: string) => {
-                let item: RegExpExecArray = classNameRegex.exec(selector);
+            rule.selectors?.forEach((selector: string) => {
+                let item: RegExpExecArray | null = classNameRegex.exec(selector);
                 while (item) {
                     definitions.push(new CssClassDefinition(item[1]));
                     item = classNameRegex.exec(selector);
@@ -22,7 +22,7 @@ export default class CssClassExtractor {
         };
 
         // go through each of the rules or media query...
-        ast.stylesheet.rules.forEach((rule: css.Rule & css.Media) => {
+        ast.stylesheet?.rules.forEach((rule: css.Rule & css.Media) => {
             // ...of type rule
             if (rule.type === "rule") {
                 addRule(rule);
@@ -30,7 +30,7 @@ export default class CssClassExtractor {
             // of type media queries
             if (rule.type === "media") {
                 // go through rules inside media queries
-                rule.rules.forEach((rule: css.Rule) => addRule(rule));
+                rule.rules?.forEach((rule: css.Rule) => addRule(rule));
             }
         });
         return definitions;
