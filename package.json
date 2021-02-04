@@ -1,9 +1,9 @@
 {
-  "name": "html-css-class-completion",
-  "displayName": "IntelliSense for CSS class names in HTML",
-  "description": "CSS class name completion for the HTML class attribute based on the definitions found in your workspace.",
-  "version": "1.20.0",
-  "publisher": "Zignd",
+  "name": "aspnetcorerazor-html-css-class-completion",
+  "displayName": "IntelliSense for CSS class names in Razor / Blazor Projects.",
+  "description": "CSS class name completion for the HTML class attribute based on the definitions found in your workspace. This forked extension supports the aspnetcore language engine and enables OOB CSS autocompletion in ASP.NET Core Razor and Blazor projects!",
+  "version": "1.0.0",
+  "publisher": "Kevin Chatham",
   "engines": {
     "vscode": "^1.52.0"
   },
