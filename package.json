@@ -53,6 +53,7 @@
             "default": [
               "html",
               "vue",
+              "aspnetcorerazor",
               "razor",
               "blade",
               "handlebars",
