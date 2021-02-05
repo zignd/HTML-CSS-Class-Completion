@@ -2,7 +2,7 @@
   "name": "aspnetcorerazor-html-css-class-completion",
   "displayName": "Razor / Blazor CSS IntelliSense.",
   "description": "Forked from HTML CSS Class Completion: This extension is a drop in replacement for HTML CSS Class Completion with OOB Blazor / Razor support. If you're using HTML CSS Class Completion, please make sure it is uninstalled before using this extension.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "kevin-chatham",
   "engines": {
     "vscode": "^1.52.0"
