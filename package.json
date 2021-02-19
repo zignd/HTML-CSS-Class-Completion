@@ -62,7 +62,17 @@
               "markdown",
               "erb",
               "ejs",
-              "svelte"
+              "svelte",
+              "haml",
+              "slim"
+            ]
+          },
+          "html-css-class-completion.HAMLLanguages": {
+            "type": "array",
+            "description": "A list of HAML based languages where suggestions are enabled.",
+            "default": [
+              "haml",
+              "slim"
             ]
           },
           "html-css-class-completion.CSSLanguages": {
