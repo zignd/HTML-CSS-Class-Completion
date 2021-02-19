@@ -21,6 +21,8 @@ enum Configuration {
     ExcludeGlobPattern = "html-css-class-completion.excludeGlobPattern",
     EnableEmmetSupport = "html-css-class-completion.enableEmmetSupport",
     HTMLLanguages = "html-css-class-completion.HTMLLanguages",
+    HAMLLanguages = "html-css-class-completion.HAMLLanguages",
+    ERBLanguages = "html-css-class-completion.ERBLanguages",
     CSSLanguages = "html-css-class-completion.CSSLanguages",
     JavaScriptLanguages = "html-css-class-completion.JavaScriptLanguages",
 }
@@ -33,6 +35,8 @@ const completionTriggerChars = ['"', "'", " ", "."];
 let caching = false;
 
 const htmlDisposables: Disposable[] = [];
+const hamlDisposables: Disposable[] = [];
+const erbDisposables: Disposable[] = [];
 const cssDisposables: Disposable[] = [];
 const javaScriptDisposables: Disposable[] = [];
 const emmetDisposables: Disposable[] = [];
@@ -144,6 +148,20 @@ const registerHTMLProviders = (disposables: Disposable[]) =>
             disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
         });
 
+const registerHAMLProviders = (disposables: Disposable[]) =>
+    workspace.getConfiguration()
+        ?.get<string[]>(Configuration.HAMLLanguages)
+        ?.forEach((extension) => {
+            disposables.push(registerCompletionProvider(extension, /(?=\.)([\w-. ]*$)/, "", "."));
+        });
+
+const registerERBProviders = (disposables: Disposable[]) =>
+    workspace.getConfiguration()
+        ?.get<string[]>(Configuration.HAMLLanguages)
+        ?.forEach((extension) => {
+            disposables.push(registerCompletionProvider(extension, /class:\s+["|']([\w- ]*$)/));
+        });
+
 const registerCSSProviders = (disposables: Disposable[]) =>
     workspace.getConfiguration()
         .get<string[]>(Configuration.CSSLanguages)
@@ -207,6 +225,16 @@ export async function activate(context: ExtensionContext): Promise<void> {
                 registerHTMLProviders(htmlDisposables);
             }
 
+            if (e.affectsConfiguration(Configuration.HAMLLanguages)) {
+                unregisterProviders(hamlDisposables);
+                registerHAMLProviders(hamlDisposables);
+            }
+
+            if (e.affectsConfiguration(Configuration.ERBLanguages)) {
+                unregisterProviders(erbDisposables);
+                registerERBProviders(erbDisposables);
+            }
+
             if (e.affectsConfiguration(Configuration.CSSLanguages)) {
                 unregisterProviders(cssDisposables);
                 registerCSSProviders(cssDisposables);
@@ -246,6 +274,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }
 
     registerHTMLProviders(htmlDisposables);
+    registerHAMLProviders(hamlDisposables);
+    registerERBProviders(erbDisposables);
     registerCSSProviders(cssDisposables);
     registerJavaScriptProviders(javaScriptDisposables);
 
@@ -263,6 +293,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
 export function deactivate(): void {
     unregisterProviders(htmlDisposables);
+    unregisterProviders(hamlDisposables);
+    unregisterProviders(erbDisposables);
     unregisterProviders(cssDisposables);
     unregisterProviders(javaScriptDisposables);
     unregisterProviders(emmetDisposables);
