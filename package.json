@@ -19,7 +19,8 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:css",
+    "workspaceContains:**/*.css"
   ],
   "contributes": {
     "commands": [
