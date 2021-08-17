@@ -6,7 +6,7 @@ export default class CssClassExtractor {
      * @description Extracts class names from CSS AST
      */
     public static extract(ast: css.Stylesheet): CssClassDefinition[] {
-        const classNameRegex = /[.]([\w-]+)/g;
+        const classNameRegex = /[.](([\w-]|\\[@:/])+)/g;
 
         const definitions: CssClassDefinition[] = [];
 
@@ -15,7 +15,7 @@ export default class CssClassExtractor {
             rule.selectors?.forEach((selector: string) => {
                 let item: RegExpExecArray | null = classNameRegex.exec(selector);
                 while (item) {
-                    definitions.push(new CssClassDefinition(item[1]));
+                    definitions.push(new CssClassDefinition(item[1].replace("\\", "")));
                     item = classNameRegex.exec(selector);
                 }
             });

@@ -141,29 +141,29 @@ const registerHTMLProviders = (disposables: Disposable[]) =>
     workspace.getConfiguration()
         ?.get<string[]>(Configuration.HTMLLanguages)
         ?.forEach((extension) => {
-            disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
+            disposables.push(registerCompletionProvider(extension, /class=["|']([\w-@:\/ ]*$)/));
         });
 
-const registerCSSProviders = (disposables: Disposable[]) =>
+const registerCSSProviders = (disposables: Disposable[]) => 
     workspace.getConfiguration()
         .get<string[]>(Configuration.CSSLanguages)
         ?.forEach((extension) => {
             // The @apply rule was a CSS proposal which has since been abandoned,
             // check the proposal for more info: http://tabatkins.github.io/specs/css-apply-rule/
             // Its support should probably be removed
-            disposables.push(registerCompletionProvider(extension, /@apply ([.\w- ]*$)/, "."));
+            disposables.push(registerCompletionProvider(extension, /@apply ([.\w-@:\/ ]*$)/, "."));
         });
 
 const registerJavaScriptProviders = (disposables: Disposable[]) =>
     workspace.getConfiguration()
         .get<string[]>(Configuration.JavaScriptLanguages)
         ?.forEach((extension) => {
-            disposables.push(registerCompletionProvider(extension, /className=["|']([\w- ]*$)/));
-            disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
+            disposables.push(registerCompletionProvider(extension, /className=["|']([\w-@:\/ ]*$)/));
+            disposables.push(registerCompletionProvider(extension, /class=["|']([\w-@:\/ ]*$)/));
         });
 
 function registerEmmetProviders(disposables: Disposable[]) {
-    const emmetRegex = /(?=\.)([\w-. ]*$)/;
+    const emmetRegex = /(?=\.)([\w-@:\/. ]*$)/;
 
     const registerProviders = (modes: string[]) => {
         modes.forEach((language) => {
