@@ -142,9 +142,6 @@ const registerHTMLProviders = (disposables: Disposable[]) =>
         ?.get<string[]>(Configuration.HTMLLanguages)
         ?.forEach((extension) => {
             disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
-
-            // Support for angular's routerLink
-            disposables.push(registerCompletionProvider(extension, /routerLinkActive=["|']([\w- ]*$)/));
         });
 
 const registerCSSProviders = (disposables: Disposable[]) =>
