@@ -5,7 +5,7 @@
   "version": "1.20.0",
   "publisher": "Zignd",
   "engines": {
-    "vscode": "^1.52.0"
+    "vscode": "^1.57.0"
   },
   "keywords": [
     "html",
@@ -114,7 +114,7 @@
     "@types/request": "^2.48.5",
     "@types/request-promise": "^4.1.47",
     "@types/verror": "^1.10.4",
-    "@types/vscode": "^1.52.0",
+    "@types/vscode": "^1.57.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "eslint": "^7.15.0",

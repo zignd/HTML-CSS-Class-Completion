@@ -142,9 +142,6 @@ const registerHTMLProviders = (disposables: Disposable[]) =>
         ?.get<string[]>(Configuration.HTMLLanguages)
         ?.forEach((extension) => {
             disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
-
-            // Support for angular's routerLink
-            disposables.push(registerCompletionProvider(extension, /routerLinkActive=["|']([\w- ]*$)/));
         });
 
 const registerCSSProviders = (disposables: Disposable[]) =>
@@ -166,7 +163,7 @@ const registerJavaScriptProviders = (disposables: Disposable[]) =>
         });
 
 function registerEmmetProviders(disposables: Disposable[]) {
-    const emmetRegex = /^(?!\/{2}).*(?=\.)([\w-. ]*)$/;
+    const emmetRegex = /^(?=\.)([\w-. ]*)$/;
 
     const registerProviders = (modes: string[]) => {
         modes.forEach((language) => {
