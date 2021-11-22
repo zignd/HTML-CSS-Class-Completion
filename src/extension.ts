@@ -158,8 +158,8 @@ const registerJavaScriptProviders = (disposables: Disposable[]) =>
     workspace.getConfiguration()
         .get<string[]>(Configuration.JavaScriptLanguages)
         ?.forEach((extension) => {
-            disposables.push(registerCompletionProvider(extension, /className=["|']([\w- ]*$)/));
-            disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
+            disposables.push(registerCompletionProvider(extension, /className=(?:{?"|{?')([\w- ]*$)/));
+            disposables.push(registerCompletionProvider(extension, /class=(?:{?"|{?')([\w- ]*$)/));
         });
 
 function registerEmmetProviders(disposables: Disposable[]) {
