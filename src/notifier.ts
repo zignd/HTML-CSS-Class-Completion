@@ -5,7 +5,8 @@ class Notifier {
     private timeoutId: NodeJS.Timer | null;
 
     constructor(command?: string, alignment?: vscode.StatusBarAlignment, priority?: number) {
-        this.statusBarItem = vscode.window.createStatusBarItem(alignment, priority);
+        this.statusBarItem = vscode.window.createStatusBarItem('html-css-class-completion', alignment, priority);
+        this.statusBarItem.name = 'HTML/CSS Class Completion'
         this.statusBarItem.command = command;
         this.statusBarItem.show();
         this.timeoutId = null;

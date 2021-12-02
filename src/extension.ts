@@ -163,7 +163,7 @@ const registerJavaScriptProviders = (disposables: Disposable[]) =>
         });
 
 function registerEmmetProviders(disposables: Disposable[]) {
-    const emmetRegex = /(?=\.)([\w-. ]*$)/;
+    const emmetRegex = /^(?=\.)([\w-. ]*)$/;
 
     const registerProviders = (modes: string[]) => {
         modes.forEach((language) => {
