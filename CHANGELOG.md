@@ -1,3 +1,6 @@
+### 1.21 (Sep 26, 2023)
+* Added support for customized language setups. You can set arbitrary regex expression to trigger autocompletion of cached CSS class names.
+
 ### 1.20 (Dec 19, 2020)
 * Settings to allow users to specify which language modes will have autocompletion;
 * Fix interpretation of classes defined inside media queries.

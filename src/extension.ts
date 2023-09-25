@@ -23,6 +23,7 @@ enum Configuration {
     HTMLLanguages = "html-css-class-completion.HTMLLanguages",
     CSSLanguages = "html-css-class-completion.CSSLanguages",
     JavaScriptLanguages = "html-css-class-completion.JavaScriptLanguages",
+    CustomLanguages = "html-css-class-completion.CustomizedLanguages",
 }
 
 const notifier: Notifier = new Notifier(Command.Cache);
@@ -36,6 +37,7 @@ const htmlDisposables: Disposable[] = [];
 const cssDisposables: Disposable[] = [];
 const javaScriptDisposables: Disposable[] = [];
 const emmetDisposables: Disposable[] = [];
+const customLanguageProviders: Disposable[] = [];
 
 async function cache(): Promise<void> {
     try {
@@ -73,7 +75,7 @@ async function cache(): Promise<void> {
             }, { concurrency: 30 });
         } catch (err) {
             notifier.notify("alert", "Failed to cache the CSS classes in the workspace (click for another attempt)");
-            throw new VError(err, "Failed to parse the documents");
+            throw new VError(err as Error, "Failed to parse the documents");
         }
 
         uniqueDefinitions = _.uniqBy(definitions, (def) => def.className);
@@ -88,7 +90,7 @@ async function cache(): Promise<void> {
         notifier.notify("zap", "CSS classes cached (click to cache again)");
     } catch (err) {
         notifier.notify("alert", "Failed to cache the CSS classes in the workspace (click for another attempt)");
-        throw new VError(err,
+        throw new VError(err as Error,
             "Failed to cache the class definitions during the iterations over the documents that were found");
     }
 }
@@ -161,6 +163,30 @@ const registerJavaScriptProviders = (disposables: Disposable[]) =>
             disposables.push(registerCompletionProvider(extension, /className=["|']([\w- ]*$)/));
             disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
         });
+        
+function registerCustomLanguageProviders(disposables: Disposable[]) {
+    const items = workspace.getConfiguration()
+        .get<{[key:string]: string[]}>(Configuration.CustomLanguages);
+    
+    if (typeof items !== "object") {
+        throw new VError(`The configuration value for '${Configuration.CustomLanguages}' must be an object`);
+    }
+        
+    for (const extension in items) {
+        const regex = items[extension];
+        try {
+            if (typeof regex === "string") {
+                disposables.push(registerCompletionProvider(extension, new RegExp(regex)));
+            } else if (Array.isArray(regex)) {
+                regex.forEach((regex) => {
+                    disposables.push(registerCompletionProvider(extension, new RegExp(regex)));
+                });
+            }
+        } catch(err) {
+            throw new VError(err as Error, `Failed to register completion provider for language '${extension}' and regex '${regex}'`);
+        }
+    }
+}
 
 function registerEmmetProviders(disposables: Disposable[]) {
     const emmetRegex = /(?=\.)([\w-. ]*$)/;
@@ -216,8 +242,13 @@ export async function activate(context: ExtensionContext): Promise<void> {
                 unregisterProviders(javaScriptDisposables);
                 registerJavaScriptProviders(javaScriptDisposables);
             }
+            
+            if (e.affectsConfiguration(Configuration.CustomLanguages)) {
+                unregisterProviders(customLanguageProviders);
+                registerCustomLanguageProviders(customLanguageProviders);
+            }
         } catch (err) {
-            const newErr = new VError(err, "Failed to automatically reload the extension after the configuration change");
+            const newErr = new VError(err as Error, "Failed to automatically reload the extension after the configuration change");
             console.error(newErr);
             window.showErrorMessage(newErr.message);
         }
@@ -233,7 +264,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         try {
             await cache();
         } catch (err) {
-            const newErr = new VError(err, "Failed to cache the CSS classes in the workspace");
+            const newErr = new VError(err as Error, "Failed to cache the CSS classes in the workspace");
             console.error(newErr);
             window.showErrorMessage(newErr.message);
         } finally {
@@ -248,12 +279,13 @@ export async function activate(context: ExtensionContext): Promise<void> {
     registerHTMLProviders(htmlDisposables);
     registerCSSProviders(cssDisposables);
     registerJavaScriptProviders(javaScriptDisposables);
+    registerCustomLanguageProviders(customLanguageProviders);
 
     caching = true;
     try {
         await cache();
     } catch (err) {
-        const newErr = new VError(err, "Failed to cache the CSS classes in the workspace for the first time");
+        const newErr = new VError(err as Error, "Failed to cache the CSS classes in the workspace for the first time");
         console.error(newErr);
         window.showErrorMessage(newErr.message);
     } finally {
