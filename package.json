@@ -2,7 +2,7 @@
   "name": "html-css-class-completion-everywhere",
   "displayName": "IntelliSense for CSS class names in HTML + ♥️",
   "description": "CSS class name completion for the HTML class attribute based on the definitions found in your workspace. This fork added autocompletion support based on customized regex expressions on arbitrary languages.",
-  "version": "1.21.0",
+  "version": "1.21.1",
   "publisher": "kang-sw",
   "engines": {
     "vscode": "^1.52.0"
@@ -87,7 +87,7 @@
             "type": "object",
             "description": "A list of customized languages where suggestions are enabled with specified regex matching rules.",
             "default": {
-              "rs": "class:\"([^\"]*)\""
+              "rust": "r#class_name_here:\"([^\"]*)\""
             }
           }
         }

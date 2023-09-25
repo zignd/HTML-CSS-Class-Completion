@@ -1,3 +1,28 @@
+> This repository is a fork of the original [zignd/HTML-CSS-Class-Completion](https://github.com/Zignd/HTML-CSS-Class-Completion). If you are currently using the original extension, please uninstall it first before installing this forked version.
+>
+> The primary addition in this fork is the `html-css-class-completion.CustomLanguages` configuration. This allows users to specify custom regex patterns, enabling CSS autocompletion in various languages.
+>
+> Here's an example showcasing how to set up autocompletion for different languages:
+>
+> ```jsonc
+> "html-css-class-completion.CustomizedLanguages": {
+>     "rust": [
+>         "class:\\s*\"([\\w- ]*$)",
+>         "className:\\s*\"([\\w- ]*$)"
+>     ],
+>     "cpp": "auto\\s+class[nN]ame\\s*=\\s*\"([\\w- ]*$)" // Strings are also acceptable
+> }
+> ```
+>
+> Admittedly, I'm not experienced in vscode extension development and am still grasping the intricacies of regex. The regex patterns provided above were adapted from the original extension's source code. To assist in configuring your own setups, here are the original regex expressions from the extension's source code:
+>
+> ```js
+> const cssClassRegex = /@apply ([.\w- ]*$)/;
+> const htmlClassRegex = /class=["|']([\w- ]*$)/;
+> const jsAndJsxClassRegex = [/className=["|']([\w- ]*$)/, /class=["|']([\w- ]*$)/];
+> ```
+
+
 # IntelliSense for CSS class names in HTML
 
 A Visual Studio Code extension that provides CSS class name completion for the HTML `class` attribute based on the definitions found in your workspace or external files referenced through the `link` element.
